@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="app-container">
-    <header class="navbar" v-if="!isLanding">
+    <header class="navbar" v-if="!isFullScreen">
       <h1>ChainTrace</h1>
       <nav>
         <router-link to="/dashboard">Dashboard</router-link>
@@ -8,7 +8,7 @@
         <router-link to="/login">Login</router-link>
       </nav>
     </header>
-    <main :class="['content', { 'content-landing': isLanding }]">
+    <main :class="['content', { 'content-landing': isFullScreen }]">
       <router-view />
     </main>
   </div>
@@ -19,7 +19,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const isLanding = computed(() => route.name === 'Landing')
+const isFullScreen = computed(() => ['Landing', 'Verify'].includes(route.name))
 </script>
 
 <style>
