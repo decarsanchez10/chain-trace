@@ -1,2133 +1,843 @@
 <template>
   <div class="landing-page">
-    <!-- Animated Background Canvas -->
-    <canvas class="bg-canvas" ref="bgCanvas"></canvas>
 
-    <!-- ══════════════════════════════════════════
-         HEADER
-    ══════════════════════════════════════════ -->
-    <header class="landing-header">
-      <div class="brand">
-        <div class="logo-icon" aria-hidden="true">
-          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <filter id="logo-glow">
-                <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-            <g filter="url(#logo-glow)">
-              <polygon points="20,4 34,12 20,20 6,12" fill="rgba(0,212,212,0.15)" stroke="#00d4d4" stroke-width="1.2"/>
-              <polygon points="6,12 20,20 20,36 6,28" fill="rgba(0,212,212,0.08)" stroke="#00d4d4" stroke-width="1.2"/>
-              <polygon points="34,12 20,20 20,36 34,28" fill="rgba(0,100,255,0.12)" stroke="#00b4ff" stroke-width="1.2"/>
-              <line x1="20" y1="4" x2="20" y2="20" stroke="#00d4d4" stroke-width="0.8" stroke-dasharray="2,2"/>
-            </g>
+    <!-- ═══════════════════════════════════════════════
+         NAVIGATION
+    ═══════════════════════════════════════════════ -->
+    <nav id="landing-nav" :class="['landing-nav', { 'nav-scrolled': isScrolled }]" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo" aria-label="ChainTrace home">
+          <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <polygon points="18,2 33,9.5 33,26.5 18,34 3,26.5 3,9.5" fill="none" stroke="#3B82F6" stroke-width="1.2"/>
+            <polygon points="18,7 28,12.5 28,23.5 18,29 8,23.5 8,12.5" fill="none" stroke="rgba(59,130,246,0.3)" stroke-width="0.8"/>
+            <circle cx="13" cy="16" r="2.5" fill="none" stroke="#06B6D4" stroke-width="1.2"/>
+            <circle cx="23" cy="16" r="2.5" fill="none" stroke="#06B6D4" stroke-width="1.2"/>
+            <line x1="15.5" y1="16" x2="20.5" y2="16" stroke="#06B6D4" stroke-width="1.2"/>
+            <circle cx="18" cy="21" r="2" fill="none" stroke="#3B82F6" stroke-width="1"/>
+            <line x1="13" y1="18.5" x2="16.6" y2="19.6" stroke="#3B82F6" stroke-width="0.8"/>
+            <line x1="23" y1="18.5" x2="19.4" y2="19.6" stroke="#3B82F6" stroke-width="0.8"/>
           </svg>
-        </div>
-        <div class="brand-text">
-          <span class="brand-name">CHAINTRACE</span>
-          <span class="brand-tagline">TRACE. VERIFY. TRUST.</span>
+          <span class="nav-wordmark">CHAINTRACE</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#architecture">Research</a></li>
+          <li><a href="#architecture">Architecture</a></li>
+          <li><a href="#verification">Verification</a></li>
+          <li><a href="#features">Hardware</a></li>
+          <li><a href="#timeline">Documentation</a></li>
+          <li><a href="#footer">Contact</a></li>
+        </ul>
+
+        <div class="nav-cta">
+          <router-link to="/dashboard" class="btn-primary-nav">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            Open Dashboard
+          </router-link>
         </div>
       </div>
-      <nav class="landing-nav" aria-label="Main navigation">
-        <a href="#home"         class="nav-link active" id="nav-home">HOME</a>
-        <a href="#overview"     class="nav-link" id="nav-overview">OVERVIEW</a>
-        <a href="#architecture" class="nav-link" id="nav-architecture">ARCHITECTURE</a>
-        <a href="#features"     class="nav-link" id="nav-features">FEATURES</a>
-        <a href="#tech"         class="nav-link" id="nav-tech">TECH STACK</a>
-        <a href="#project"      class="nav-link" id="nav-project">PROJECT</a>
-        <a href="#contact"      class="nav-link" id="nav-contact">CONTACT</a>
-      </nav>
-    </header>
+    </nav>
 
-    <!-- ══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
          HERO
-    ══════════════════════════════════════════ -->
-    <section id="home" class="hero-section" aria-labelledby="hero-headline">
-      <div class="hero-grid-overlay" aria-hidden="true"></div>
+    ═══════════════════════════════════════════════ -->
+    <section id="home" class="hero-section" aria-label="Hero">
+      <div class="blueprint-bg" aria-hidden="true"></div>
+      <div class="hero-glow-l" aria-hidden="true"></div>
+      <div class="hero-glow-r" aria-hidden="true"></div>
 
-      <div class="hero-left">
-        <div class="status-badge" role="status">
-          <span class="status-dot status-green" aria-hidden="true"></span>
-          <span class="status-text">SYSTEM ONLINE</span>
-          <span class="status-divider" aria-hidden="true">|</span>
-          <span class="status-text cyan">BCH ANCHORED</span>
-          <span class="status-divider" aria-hidden="true">|</span>
-          <span class="status-text">ESP32 SCAN NODE</span>
-        </div>
+      <div class="container">
+        <div class="hero-inner">
 
-        <h1 class="hero-title" id="hero-headline">
-          <span class="title-line">EVERY HANDOFF.</span>
-          <span class="title-line">CRYPTOGRAPHICALLY</span>
-          <span class="title-line highlight-cyan">TRACEABLE.</span>
-        </h1>
-
-        <p class="hero-subtitle">
-          ChainTrace is a Bitcoin Cash–anchored chain-of-custody system with custom IoT-based scan-logging hardware.
-        </p>
-        <p class="hero-desc">
-          Every scan is hashed, stored, and anchored on the Bitcoin Cash blockchain—making tampering detectable and trust verifiable by anyone.
-        </p>
-
-        <div class="hero-actions">
-          <button id="btn-explore" class="btn btn-primary" @click="goTo('/dashboard')">
-            EXPLORE THE SYSTEM <span class="btn-arrow">→</span>
-          </button>
-          <button id="btn-verify" class="btn btn-secondary" @click="goTo('/verify')">
-            VERIFY A RECORD <span class="btn-arrow">↗</span>
-          </button>
-        </div>
-
-        <div class="metrics-panel" role="list" aria-label="Key features">
-          <div class="metric-item" role="listitem">
-            <div class="metric-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="3" y="7" width="18" height="14" rx="2"/>
-                <path d="M8 7V5a4 4 0 0 1 8 0v2"/><circle cx="12" cy="14" r="2"/>
-                <path d="M12 14v3" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="metric-text">
-              <span class="metric-label">REAL-TIME</span>
-              <span class="metric-sublabel">SCAN LOGGING</span>
+          <!-- Left -->
+          <div class="hero-left">
+            <span class="label">Blockchain-Backed Chain-of-Custody Research</span>
+            <h1 class="hero-headline">
+              Proving custody with <span class="gradient-text">cryptographic evidence.</span>
+            </h1>
+            <p class="hero-para">
+              ChainTrace combines custom ESP32 IoT hardware, SHA-256 hashing, and Bitcoin Cash blockchain anchoring to create tamper-evident custody records that can be independently verified by anyone.
+            </p>
+            <div class="hero-btns">
+              <a href="#architecture" class="btn btn-primary">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12,8 16,12 12,16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                View Architecture
+              </a>
+              <router-link to="/verify" class="btn btn-ghost">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                Verify Record
+              </router-link>
             </div>
           </div>
-          <div class="metric-divider" aria-hidden="true"></div>
-          <div class="metric-item" role="listitem">
-            <div class="metric-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M12 2L3 7v6c0 5.25 3.75 10.15 9 11.25C17.25 23.15 21 18.25 21 13V7L12 2z"/>
-                <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- Right — ESP32 Hardware Diagram -->
+          <div class="hero-right" aria-label="ESP32 scan node hardware diagram">
+            <div class="hw-diagram">
+              <!-- Floating component callouts -->
+              <div class="hw-comp hw-comp-1"><div class="comp-name">Microcontroller</div><div class="comp-val">ESP32-WROOM-32</div></div>
+              <div class="hw-comp hw-comp-2"><div class="comp-name">RFID Reader</div><div class="comp-val">RC522 / 13.56 MHz</div></div>
+              <div class="hw-comp hw-comp-3"><div class="comp-name">Real-Time Clock</div><div class="comp-val">DS3231 ±2ppm</div></div>
+              <div class="hw-comp hw-comp-4"><div class="comp-name">IMU Sensor</div><div class="comp-val">MPU6050 6-DOF</div></div>
+              <div class="hw-comp hw-comp-5"><div class="comp-name">Tamper Switch</div><div class="comp-val">SPDT / Active Low</div></div>
+              <div class="hw-comp hw-comp-6"><div class="comp-name">Battery</div><div class="comp-val">Li-Ion 3.7V 2000mAh</div></div>
+
+              <!-- PCB SVG -->
+              <svg class="pcb-svg" viewBox="0 0 280 240" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="20" y="20" width="240" height="200" rx="12" fill="#061810" stroke="rgba(0,200,80,0.3)" stroke-width="1.5"/>
+                <circle cx="36" cy="36" r="4" fill="none" stroke="rgba(0,200,80,0.2)" stroke-width="1"/>
+                <circle cx="244" cy="36" r="4" fill="none" stroke="rgba(0,200,80,0.2)" stroke-width="1"/>
+                <circle cx="36" cy="204" r="4" fill="none" stroke="rgba(0,200,80,0.2)" stroke-width="1"/>
+                <circle cx="244" cy="204" r="4" fill="none" stroke="rgba(0,200,80,0.2)" stroke-width="1"/>
+                <path d="M85 120 L110 120 L110 95 L140 95" stroke="rgba(0,200,80,0.18)" stroke-width="1" fill="none"/>
+                <path d="M85 130 L110 130 L110 155 L140 155" stroke="rgba(0,200,80,0.13)" stroke-width="1" fill="none"/>
+                <path d="M195 120 L170 120 L170 95 L140 95" stroke="rgba(0,200,80,0.18)" stroke-width="1" fill="none"/>
+                <path d="M195 130 L170 130 L170 155 L140 155" stroke="rgba(0,200,80,0.13)" stroke-width="1" fill="none"/>
+                <circle cx="110" cy="95" r="2.5" fill="rgba(0,200,80,0.3)" stroke="rgba(0,200,80,0.6)" stroke-width="0.8"/>
+                <circle cx="110" cy="155" r="2.5" fill="rgba(0,200,80,0.3)" stroke="rgba(0,200,80,0.6)" stroke-width="0.8"/>
+                <circle cx="170" cy="95" r="2.5" fill="rgba(0,200,80,0.3)" stroke="rgba(0,200,80,0.6)" stroke-width="0.8"/>
+                <circle cx="170" cy="155" r="2.5" fill="rgba(0,200,80,0.3)" stroke="rgba(0,200,80,0.6)" stroke-width="0.8"/>
+                <rect x="115" y="95" width="50" height="50" rx="3" fill="#1a1a2e" stroke="rgba(100,100,150,0.6)" stroke-width="1"/>
+                <rect x="120" y="100" width="40" height="40" rx="2" fill="#0d0d1a" stroke="rgba(80,80,120,0.4)" stroke-width="0.5"/>
+                <text x="140" y="124" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(150,150,200,0.7)">ESP32</text>
+                <line x1="160" y1="100" x2="165" y2="100" stroke="rgba(100,100,150,0.4)" stroke-width="0.8"/>
+                <line x1="160" y1="108" x2="167" y2="108" stroke="rgba(100,100,150,0.4)" stroke-width="0.8"/>
+                <line x1="160" y1="116" x2="165" y2="116" stroke="rgba(100,100,150,0.4)" stroke-width="0.8"/>
+                <rect x="20" y="88" width="4" height="64" fill="none" stroke="rgba(0,200,80,0.15)" stroke-width="0.8"/>
+                <line x1="22" y1="96" x2="22" y2="100" stroke="rgba(200,160,0,0.35)" stroke-width="1.5"/>
+                <line x1="22" y1="110" x2="22" y2="114" stroke="rgba(200,160,0,0.35)" stroke-width="1.5"/>
+                <line x1="22" y1="124" x2="22" y2="128" stroke="rgba(200,160,0,0.35)" stroke-width="1.5"/>
+                <line x1="22" y1="138" x2="22" y2="142" stroke="rgba(200,160,0,0.35)" stroke-width="1.5"/>
+                <rect x="256" y="88" width="4" height="64" fill="none" stroke="rgba(0,200,80,0.15)" stroke-width="0.8"/>
+                <line x1="258" y1="96" x2="258" y2="100" stroke="rgba(200,160,0,0.35)" stroke-width="1.5"/>
+                <line x1="258" y1="110" x2="258" y2="114" stroke="rgba(200,160,0,0.35)" stroke-width="1.5"/>
+                <line x1="258" y1="124" x2="258" y2="128" stroke="rgba(200,160,0,0.35)" stroke-width="1.5"/>
+                <text x="36" y="78" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(6,182,212,0.6)">RC522</text>
+                <text x="244" y="78" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(6,182,212,0.6)">DS3231</text>
+                <text x="36" y="200" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(6,182,212,0.6)">MPU6050</text>
+                <text x="244" y="200" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(6,182,212,0.6)">LiPo PWR</text>
+                <rect x="26" y="26" width="228" height="188" rx="6" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.8" stroke-dasharray="4 4"/>
+                <text x="140" y="16" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(0,200,80,0.35)" letter-spacing="2">CHAINTRACE-NODE-v1.0</text>
               </svg>
-            </div>
-            <div class="metric-text">
-              <span class="metric-label">TAMPER-EVIDENT</span>
-              <span class="metric-sublabel">HASH VERIFICATION</span>
+
+              <div class="hw-badge">Custom ESP32 Scan Node — KiCad Design</div>
             </div>
           </div>
-          <div class="metric-divider" aria-hidden="true"></div>
-          <div class="metric-item" role="listitem">
-            <div class="metric-icon metric-icon-bch" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M9 8h4.5a2.5 2.5 0 0 1 0 5H9v-5z" stroke-linecap="round"/>
-                <path d="M9 13h5a2.5 2.5 0 0 1 0 5H9v-5z" stroke-linecap="round"/>
-                <line x1="11" y1="6" x2="11" y2="8"/><line x1="13" y1="6" x2="13" y2="8"/>
-                <line x1="11" y1="18" x2="11" y2="20"/><line x1="13" y1="18" x2="13" y2="20"/>
-              </svg>
-            </div>
-            <div class="metric-text">
-              <span class="metric-label">ANCHORED ON</span>
-              <span class="metric-sublabel">BITCOIN CASH</span>
-            </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         METRICS
+    ═══════════════════════════════════════════════ -->
+    <section id="metrics" class="metrics-section" aria-label="Key statistics">
+      <div class="container">
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <svg class="metric-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><rect x="8" y="12" width="24" height="18" rx="2"/><path d="M14 12V9a6 6 0 0112 0v3"/><circle cx="20" cy="22" r="2.5" fill="currentColor" stroke="none"/><line x1="20" y1="24.5" x2="20" y2="27"/></svg>
+            <div class="metric-value">256-bit</div>
+            <div class="metric-label">SHA-256 Integrity Hashing</div>
+          </div>
+          <div class="metric-card">
+            <svg class="metric-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><rect x="4" y="10" width="14" height="10" rx="2"/><rect x="22" y="10" width="14" height="10" rx="2"/><rect x="4" y="24" width="14" height="10" rx="2"/><rect x="22" y="24" width="14" height="10" rx="2"/><line x1="18" y1="15" x2="22" y2="15"/><line x1="11" y1="20" x2="11" y2="24"/><line x1="29" y1="20" x2="29" y2="24"/><line x1="18" y1="29" x2="22" y2="29"/></svg>
+            <div class="metric-value">BCH</div>
+            <div class="metric-label">OP_RETURN Blockchain Anchoring</div>
+          </div>
+          <div class="metric-card">
+            <svg class="metric-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><circle cx="20" cy="20" r="14"/><polyline points="20,10 20,20 26,26"/><line x1="6" y1="20" x2="9" y2="20"/><line x1="31" y1="20" x2="34" y2="20"/><line x1="20" y1="6" x2="20" y2="9"/></svg>
+            <div class="metric-value">RTC</div>
+            <div class="metric-label">Offline Timestamp Support</div>
+          </div>
+          <div class="metric-card">
+            <svg class="metric-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M20 6l2.5 7.5H30l-6 4.5 2.5 7.5L20 21l-6.5 4.5 2.5-7.5-6-4.5h7.5z"/><circle cx="20" cy="20" r="16" stroke-dasharray="3 3"/></svg>
+            <div class="metric-value">Public</div>
+            <div class="metric-label">Independent Verification</div>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="hero-right">
-        <div class="visual-panel" aria-label="Holographic blockchain visualization">
-          <div class="panel-glow-ring panel-glow-ring--top" aria-hidden="true"></div>
-          <div class="panel-glow-ring panel-glow-ring--bot" aria-hidden="true"></div>
+    <!-- ═══════════════════════════════════════════════
+         ARCHITECTURE
+    ═══════════════════════════════════════════════ -->
+    <section id="architecture" class="arch-section" aria-label="System architecture">
+      <div class="blueprint-bg" aria-hidden="true" style="opacity:0.4;"></div>
+      <div class="container" style="position:relative;z-index:2;">
+        <div class="section-header">
+          <span class="label">System Architecture</span>
+          <h2 class="section-title" style="margin-top:20px;">End-to-end data flow</h2>
+          <p class="section-sub" style="margin-top:16px;">From physical RFID scan to immutable blockchain record — every step is cryptographically linked.</p>
+        </div>
 
-          <div class="float-card float-card--top" role="status">
-            <span class="float-dot float-dot--green" aria-hidden="true"></span>
-            <div class="float-card-text">
-              <span class="float-card-title">LIVE SCAN NODE</span>
-              <span class="float-card-sub">ESP32 RFID v1.2</span>
+        <!-- Primary flow -->
+        <div class="arch-flow" role="list" aria-label="Primary data flow">
+          <div class="arch-node" role="listitem" v-for="(node, i) in archNodes" :key="i">
+            <div class="arch-node-icon" v-html="node.icon"></div>
+            <div class="arch-node-title">{{ node.title }}</div>
+            <div class="arch-node-sub">{{ node.sub }}</div>
+          </div>
+          <!-- Arrows are rendered between nodes via CSS/flex pseudo -->
+        </div>
+
+        <!-- Arrows row (separate for clean layout) -->
+        <div class="arch-arrows-row" aria-hidden="true">
+          <div class="arch-arrow-line" v-for="i in 5" :key="i">
+            <div class="arch-pulse" :style="{ animationDelay: (i * 0.35) + 's' }"></div>
+          </div>
+        </div>
+
+        <!-- Verification path -->
+        <div class="arch-verify" aria-label="Verification data flow">
+          <div class="arch-node arch-node-cyan" v-for="(node, i) in verifyNodes" :key="i">
+            <div class="arch-node-icon" v-html="node.icon"></div>
+            <div class="arch-node-title">{{ node.title }}</div>
+            <div class="arch-node-sub">{{ node.sub }}</div>
+          </div>
+        </div>
+        <div class="arch-verify-label">INDEPENDENT VERIFICATION PATH</div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         FEATURES / RESEARCH HIGHLIGHTS
+    ═══════════════════════════════════════════════ -->
+    <section id="features" class="features-section" aria-label="Research highlights">
+      <div class="container">
+        <div class="section-header">
+          <span class="label">Research Highlights</span>
+          <h2 class="section-title" style="margin-top:20px;">Three pillars of custody integrity</h2>
+        </div>
+        <div class="features-grid">
+
+          <!-- Hardware Integrity -->
+          <div class="feature-card fade-up">
+            <div class="feature-illustration" aria-label="Hardware schematic diagram">
+              <svg viewBox="0 0 320 160" fill="none" style="width:100%;height:100%;" aria-hidden="true">
+                <rect x="60" y="20" width="200" height="120" rx="8" fill="none" stroke="rgba(59,130,246,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+                <rect x="120" y="55" width="80" height="50" rx="3" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.28)" stroke-width="1"/>
+                <text x="160" y="83" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(59,130,246,0.55)">ESP32</text>
+                <rect x="68" y="35" width="40" height="25" rx="2" fill="rgba(6,182,212,0.04)" stroke="rgba(6,182,212,0.22)" stroke-width="0.8"/>
+                <text x="88" y="51" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(6,182,212,0.45)">RC522</text>
+                <rect x="212" y="35" width="40" height="25" rx="2" fill="rgba(6,182,212,0.04)" stroke="rgba(6,182,212,0.22)" stroke-width="0.8"/>
+                <text x="232" y="51" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(6,182,212,0.45)">DS3231</text>
+                <rect x="68" y="100" width="40" height="25" rx="2" fill="rgba(6,182,212,0.04)" stroke="rgba(6,182,212,0.22)" stroke-width="0.8"/>
+                <text x="88" y="116" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(6,182,212,0.45)">MPU6050</text>
+                <rect x="212" y="100" width="40" height="25" rx="2" fill="rgba(6,182,212,0.04)" stroke="rgba(6,182,212,0.22)" stroke-width="0.8"/>
+                <text x="232" y="116" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(6,182,212,0.45)">TAMPER</text>
+                <line x1="108" y1="47" x2="120" y2="72" stroke="rgba(59,130,246,0.18)" stroke-width="0.8"/>
+                <line x1="212" y1="47" x2="200" y2="72" stroke="rgba(59,130,246,0.18)" stroke-width="0.8"/>
+                <line x1="108" y1="112" x2="120" y2="95" stroke="rgba(59,130,246,0.18)" stroke-width="0.8"/>
+                <line x1="212" y1="112" x2="200" y2="95" stroke="rgba(59,130,246,0.18)" stroke-width="0.8"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">Hardware Integrity</h3>
+            <p class="feature-desc">Custom PCB designed in KiCad integrates RFID scanning, real-time tamper detection via hardware switches, 6-DOF motion sensing, and offline RTC timestamps.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">Custom PCB</span>
+              <span class="feature-tag">RFID</span>
+              <span class="feature-tag">Tamper Detection</span>
+              <span class="feature-tag">MPU6050</span>
+              <span class="feature-tag">DS3231</span>
             </div>
           </div>
 
-          <div class="visual-image-wrap">
-            <img src="/img/hero_scan_node_blockchain.png"
-              alt="ESP32 RFID scan node with holographic blockchain network"
-              class="visual-image" loading="eager"/>
-            <div class="blockchain-overlay" aria-hidden="true">
-              <svg class="blockchain-svg" viewBox="0 0 520 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <filter id="node-glow"><feGaussianBlur stdDeviation="3" result="blur"/>
-                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                  <filter id="line-glow"><feGaussianBlur stdDeviation="2" result="blur"/>
-                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                </defs>
-                <g filter="url(#line-glow)" opacity="0.5">
-                  <line x1="260" y1="140" x2="120" y2="80" stroke="#00d4d4" stroke-width="1"/>
-                  <line x1="260" y1="140" x2="400" y2="70" stroke="#00d4d4" stroke-width="1"/>
-                  <line x1="260" y1="140" x2="80" y2="220" stroke="#00b4ff" stroke-width="1"/>
-                  <line x1="260" y1="140" x2="440" y2="230" stroke="#00b4ff" stroke-width="1"/>
-                  <line x1="120" y1="80" x2="400" y2="70" stroke="#00d4d4" stroke-width="0.5" stroke-dasharray="4,4"/>
-                  <line x1="80" y1="220" x2="440" y2="230" stroke="#00b4ff" stroke-width="0.5" stroke-dasharray="4,4"/>
-                </g>
-                <g filter="url(#node-glow)" class="svg-cube-center">
-                  <rect x="210" y="100" width="100" height="80" rx="6" fill="rgba(0,212,212,0.08)" stroke="#00d4d4" stroke-width="1.5"/>
-                  <text x="260" y="128" text-anchor="middle" fill="#00d4d4" font-size="7" font-family="monospace" font-weight="bold">ANCHORED ON</text>
-                  <text x="260" y="142" text-anchor="middle" fill="#ffffff" font-size="9" font-family="monospace" font-weight="bold">BITCOIN</text>
-                  <text x="260" y="156" text-anchor="middle" fill="#ffffff" font-size="9" font-family="monospace" font-weight="bold">CASH</text>
-                  <text x="260" y="170" text-anchor="middle" fill="#00d4d4" font-size="7" font-family="monospace">CHAIN</text>
-                </g>
-                <g filter="url(#node-glow)" opacity="0.9">
-                  <rect x="75" y="52" width="90" height="56" rx="4" fill="rgba(0,100,255,0.1)" stroke="#00b4ff" stroke-width="1"/>
-                  <text x="120" y="72" text-anchor="middle" fill="#00b4ff" font-size="5.5" font-family="monospace">BLOCK #892441</text>
-                  <text x="120" y="84" text-anchor="middle" fill="#a0b4c8" font-size="5" font-family="monospace">TS: 2026-07-26</text>
-                  <text x="120" y="96" text-anchor="middle" fill="#a0b4c8" font-size="4.5" font-family="monospace">0xa3f1...c82d</text>
-                  <text x="120" y="107" text-anchor="middle" fill="#22c55e" font-size="5" font-family="monospace">✓ CONFIRMED</text>
-                </g>
-                <g filter="url(#node-glow)" opacity="0.9">
-                  <rect x="356" y="44" width="90" height="56" rx="4" fill="rgba(120,40,220,0.1)" stroke="#a855f7" stroke-width="1"/>
-                  <text x="401" y="64" text-anchor="middle" fill="#c084fc" font-size="5.5" font-family="monospace">BLOCK #892440</text>
-                  <text x="401" y="76" text-anchor="middle" fill="#a0b4c8" font-size="5" font-family="monospace">TS: 2026-07-26</text>
-                  <text x="401" y="88" text-anchor="middle" fill="#a0b4c8" font-size="4.5" font-family="monospace">0xf7e2...1a09</text>
-                  <text x="401" y="99" text-anchor="middle" fill="#22c55e" font-size="5" font-family="monospace">✓ CONFIRMED</text>
-                </g>
-                <g filter="url(#node-glow)" opacity="0.8">
-                  <rect x="30" y="194" width="90" height="56" rx="4" fill="rgba(0,212,212,0.08)" stroke="#00d4d4" stroke-width="1"/>
-                  <text x="75" y="214" text-anchor="middle" fill="#00d4d4" font-size="5.5" font-family="monospace">SHA-256 HASH</text>
-                  <text x="75" y="226" text-anchor="middle" fill="#a0b4c8" font-size="4.5" font-family="monospace">3b4c...f92a</text>
-                  <text x="75" y="238" text-anchor="middle" fill="#a0b4c8" font-size="4.5" font-family="monospace">RFID: E200...</text>
-                  <text x="75" y="249" text-anchor="middle" fill="#22c55e" font-size="5" font-family="monospace">VERIFIED ✓</text>
-                </g>
-                <g filter="url(#node-glow)" opacity="0.8">
-                  <rect x="398" y="202" width="90" height="56" rx="4" fill="rgba(0,180,255,0.08)" stroke="#00b4ff" stroke-width="1"/>
-                  <text x="443" y="222" text-anchor="middle" fill="#00b4ff" font-size="5.5" font-family="monospace">OP_RETURN TX</text>
-                  <text x="443" y="234" text-anchor="middle" fill="#a0b4c8" font-size="4.5" font-family="monospace">9d1f...b347</text>
-                  <text x="443" y="246" text-anchor="middle" fill="#a0b4c8" font-size="4.5" font-family="monospace">BCH CHIPNET</text>
-                  <text x="443" y="257" text-anchor="middle" fill="#22c55e" font-size="5" font-family="monospace">ANCHORED ✓</text>
-                </g>
+          <!-- Blockchain Anchoring -->
+          <div class="feature-card fade-up">
+            <div class="feature-illustration" aria-label="Blockchain anchoring diagram">
+              <svg viewBox="0 0 320 160" fill="none" style="width:100%;height:100%;" aria-hidden="true">
+                <rect x="20" y="60" width="60" height="40" rx="4" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.28)" stroke-width="1"/>
+                <text x="50" y="77" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(59,130,246,0.45)">BLOCK</text>
+                <text x="50" y="88" text-anchor="middle" font-family="monospace" font-size="5" fill="rgba(59,130,246,0.3)">#849120</text>
+                <line x1="80" y1="80" x2="100" y2="80" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+                <polygon points="98,76 106,80 98,84" fill="rgba(59,130,246,0.25)"/>
+                <rect x="110" y="60" width="60" height="40" rx="4" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.28)" stroke-width="1"/>
+                <text x="140" y="77" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(59,130,246,0.45)">BLOCK</text>
+                <text x="140" y="88" text-anchor="middle" font-family="monospace" font-size="5" fill="rgba(59,130,246,0.3)">#849121</text>
+                <line x1="170" y1="80" x2="190" y2="80" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+                <polygon points="188,76 196,80 188,84" fill="rgba(59,130,246,0.25)"/>
+                <rect x="200" y="55" width="70" height="50" rx="4" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.45)" stroke-width="1.2"/>
+                <text x="235" y="72" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(59,130,246,0.7)">BLOCK</text>
+                <text x="235" y="82" text-anchor="middle" font-family="monospace" font-size="5" fill="rgba(59,130,246,0.55)">#849122</text>
+                <text x="235" y="96" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(6,182,212,0.75)">OP_RETURN</text>
+                <text x="235" y="120" text-anchor="middle" font-family="monospace" font-size="5" fill="rgba(6,182,212,0.45)">sha256:a3f9...</text>
+                <rect x="90" y="25" width="140" height="22" rx="3" fill="rgba(6,182,212,0.03)" stroke="rgba(6,182,212,0.13)" stroke-width="0.8"/>
+                <text x="160" y="40" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(6,182,212,0.45)">SHA-256(payload) → anchor tx</text>
+                <line x1="235" y1="47" x2="235" y2="55" stroke="rgba(6,182,212,0.18)" stroke-width="0.8" stroke-dasharray="2 2"/>
               </svg>
+            </div>
+            <h3 class="feature-title">Blockchain Anchoring</h3>
+            <p class="feature-desc">Each custody event is SHA-256 hashed and permanently embedded into the Bitcoin Cash blockchain via OP_RETURN transactions — creating immutable, censorship-resistant audit trails.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">SHA-256</span>
+              <span class="feature-tag">OP_RETURN</span>
+              <span class="feature-tag">Bitcoin Cash</span>
+              <span class="feature-tag">Immutable</span>
             </div>
           </div>
 
-          <div class="float-card float-card--bot" role="status">
-            <div class="float-card-shield" aria-hidden="true">
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M10 2L3 5.5v5c0 4.4 3.13 8.47 7 9.5 3.87-1.03 7-5.1 7-9.5v-5L10 2z"/>
-                <path d="M7 10l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Independent Verification -->
+          <div class="feature-card fade-up">
+            <div class="feature-illustration" aria-label="Independent verification flow">
+              <svg viewBox="0 0 320 160" fill="none" style="width:100%;height:100%;" aria-hidden="true">
+                <circle cx="60" cy="80" r="20" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.22)" stroke-width="1"/>
+                <text x="60" y="84" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(59,130,246,0.45)">USR</text>
+                <line x1="80" y1="80" x2="120" y2="80" stroke="rgba(59,130,246,0.2)" stroke-width="0.8" stroke-dasharray="3 3"/>
+                <rect x="120" y="60" width="80" height="40" rx="4" fill="rgba(59,130,246,0.07)" stroke="rgba(59,130,246,0.32)" stroke-width="1"/>
+                <text x="160" y="77" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(59,130,246,0.65)">VERIFY</text>
+                <text x="160" y="89" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(59,130,246,0.4)">Hash Compare</text>
+                <line x1="200" y1="80" x2="240" y2="80" stroke="rgba(59,130,246,0.2)" stroke-width="0.8" stroke-dasharray="3 3"/>
+                <circle cx="265" cy="80" r="22" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.22)" stroke-width="1"/>
+                <text x="265" y="77" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(59,130,246,0.45)">BCH</text>
+                <text x="265" y="87" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(6,182,212,0.4)">CHAIN</text>
+                <circle cx="160" cy="130" r="12" fill="rgba(34,197,94,0.08)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
+                <polyline points="154,130 158,134 167,124" stroke="rgba(34,197,94,0.7)" stroke-width="1.5" fill="none"/>
+                <text x="160" y="152" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(34,197,94,0.55)">VERIFIED</text>
+                <line x1="160" y1="100" x2="160" y2="118" stroke="rgba(34,197,94,0.18)" stroke-width="0.8" stroke-dasharray="2 2"/>
               </svg>
             </div>
-            <div class="float-card-text">
-              <span class="float-card-title">BLOCKCHAIN ANCHORED</span>
-              <div class="float-card-status">
-                <span class="float-dot float-dot--green" aria-hidden="true"></span>
-                <span class="float-card-sub">HASH VERIFIED</span>
+            <h3 class="feature-title">Independent Verification</h3>
+            <p class="feature-desc">Any party can cryptographically verify a custody record using the public verification portal — comparing SHA-256 payload hashes against OP_RETURN data on the Bitcoin Cash blockchain.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">Public Portal</span>
+              <span class="feature-tag">Hash Comparison</span>
+              <span class="feature-tag">Audit-Ready</span>
+              <span class="feature-tag">Zero Trust</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         VERIFICATION CONSOLE
+    ═══════════════════════════════════════════════ -->
+    <section id="verification" class="verify-section" aria-label="Verification console">
+      <div class="blueprint-bg" style="opacity:0.3;" aria-hidden="true"></div>
+      <div class="container" style="position:relative;z-index:2;">
+        <div class="section-header">
+          <span class="label">Verification Console</span>
+          <h2 class="section-title" style="margin-top:20px;">Verify any custody record</h2>
+          <p class="section-sub" style="margin-top:16px;">Enter a transaction ID and payload hash to cryptographically verify a custody event against the Bitcoin Cash blockchain.</p>
+        </div>
+
+        <div class="verify-inner">
+
+          <!-- Input Panel -->
+          <div class="verify-panel">
+            <div class="verify-panel-title">Query Parameters</div>
+
+            <div class="form-group">
+              <label class="form-label" for="txid-input">Transaction ID</label>
+              <input id="txid-input" v-model="txid" class="form-input" type="text" placeholder="a3f9c82e1b4d7f0e..." />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="hash-input">Payload Hash (SHA-256)</label>
+              <input id="hash-input" v-model="payloadHash" class="form-input" type="text" placeholder="sha256:..." />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="network-select">Network</label>
+              <select id="network-select" v-model="network" class="form-input">
+                <option value="chipnet">BCH Chipnet (Testnet)</option>
+                <option value="mainnet">BCH Mainnet</option>
+              </select>
+            </div>
+
+            <button id="verify-btn" class="btn-verify" @click="runVerification" :disabled="verifying">
+              <svg v-if="!verifying" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+              <svg v-else class="spin" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" opacity="0.25"/><path d="M21 12a9 9 0 00-9-9"/></svg>
+              {{ verifying ? 'Verifying...' : 'Verify Record' }}
+            </button>
+
+            <!-- Terminal output -->
+            <div v-if="terminalLines.length > 0" class="terminal-output">
+              <div class="terminal-header">$ chaintrace verify --txid ...</div>
+              <div v-for="(line, i) in terminalLines" :key="i" class="terminal-line" v-html="'&#8250; ' + line"></div>
+            </div>
+          </div>
+
+          <!-- Result Card -->
+          <div class="verify-result">
+            <div class="verify-panel-title">Verification Result</div>
+            <div class="verify-status">
+              <div class="status-badge">
+                <div class="status-dot"></div>
+                VERIFIED
+              </div>
+              <span class="status-confirm">Blockchain Confirmed</span>
+            </div>
+            <div class="verify-field"><span class="vf-key">Block Height</span><span class="vf-val accent">849,122</span></div>
+            <div class="verify-field"><span class="vf-key">Timestamp</span><span class="vf-val">2025-08-01 14:23:07 UTC</span></div>
+            <div class="verify-field"><span class="vf-key">OP_RETURN Hash</span><span class="vf-val" style="font-size:10px;">7f83b165...9069</span></div>
+            <div class="verify-field"><span class="vf-key">Payload Match</span><span class="vf-val green">✓ Exact Match</span></div>
+            <div class="verify-field"><span class="vf-key">Network</span><span class="vf-val accent">BCH Chipnet</span></div>
+            <div class="verify-field"><span class="vf-key">Confirmations</span><span class="vf-val">1,847</span></div>
+            <div class="verify-field"><span class="vf-key">Scan Node</span><span class="vf-val" style="font-size:10px;">NODE-A3:4F:2E</span></div>
+            <div class="verify-note">
+              The custody record at block #849,122 matches the submitted SHA-256 payload hash exactly. This record has been independently confirmed by 1,847 Bitcoin Cash network nodes.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════
+         TIMELINE
+    ═══════════════════════════════════════════════ -->
+    <section id="timeline" class="timeline-section" aria-label="Development timeline">
+      <div class="container">
+        <div class="timeline-inner">
+
+          <div class="timeline-left">
+            <span class="label">Project Timeline</span>
+            <h2 class="section-title" style="margin-top:20px;">Research &amp; development phases</h2>
+            <p class="section-sub" style="margin-top:16px;font-size:15px;">A structured capstone thesis progression from literature review through evaluation and final defense.</p>
+            <div class="progress-card">
+              <div class="progress-header">
+                <span>Overall Completion</span>
+                <span class="progress-pct">71%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width:71%"></div>
               </div>
             </div>
           </div>
+
+          <div class="timeline-track">
+            <div class="timeline-item" v-for="(phase, i) in phases" :key="i">
+              <div :class="['tl-dot', phase.status]"></div>
+              <div class="tl-phase">Phase 0{{ i + 1 }}</div>
+              <div class="tl-title">{{ phase.title }}</div>
+              <span :class="['tl-status', phase.status]">{{ phase.label }}</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
-         HOW IT WORKS
-    ══════════════════════════════════════════ -->
-    <section id="overview" class="how-it-works" aria-labelledby="overview-title">
-      <div class="section-label-tag" aria-hidden="true">// PROCESS OVERVIEW</div>
-      <h2 class="section-title" id="overview-title">HOW IT WORKS</h2>
-      <p class="section-subtitle">Five deterministic steps from physical scan to immutable blockchain record.</p>
-
-      <div class="process-flow">
-        <!-- Step 1 -->
-        <div class="process-step">
-          <div class="step-number-wrap">
-            <div class="step-num">01</div>
-            <div class="step-connector" aria-hidden="true"></div>
-          </div>
-          <div class="step-card">
-            <div class="step-icon-box" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="3" y="7" width="18" height="14" rx="2"/>
-                <path d="M8 7V5a4 4 0 0 1 8 0v2"/>
-                <circle cx="12" cy="14" r="2"/>
-              </svg>
-            </div>
-            <div class="step-body">
-              <span class="step-tag">STEP 01</span>
-              <h3 class="step-title">RFID SCAN</h3>
-              <p class="step-desc">Handler scans the asset tag using the ESP32 scan node. UID is captured in milliseconds.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="process-step">
-          <div class="step-number-wrap">
-            <div class="step-num">02</div>
-            <div class="step-connector" aria-hidden="true"></div>
-          </div>
-          <div class="step-card">
-            <div class="step-icon-box" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M12 2L3 7v6c0 5.25 3.75 10.15 9 11.25C17.25 23.15 21 18.25 21 13V7L12 2z"/>
-                <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="step-body">
-              <span class="step-tag">STEP 02</span>
-              <h3 class="step-title">HASH &amp; LOG</h3>
-              <p class="step-desc">UID, timestamp, and sensor data are hashed using SHA-256 and stored off-chain locally.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="process-step">
-          <div class="step-number-wrap">
-            <div class="step-num">03</div>
-            <div class="step-connector" aria-hidden="true"></div>
-          </div>
-          <div class="step-card">
-            <div class="step-icon-box" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="2" y="3" width="20" height="14" rx="2"/>
-                <path d="M8 21h8M12 17v4" stroke-linecap="round"/>
-                <path d="M6 8h.01M10 8h8" stroke-linecap="round"/>
-                <path d="M6 11h.01M10 11h8" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="step-body">
-              <span class="step-tag">STEP 03</span>
-              <h3 class="step-title">BACKEND API</h3>
-              <p class="step-desc">The event is transmitted to the Django REST API and stored in a PostgreSQL database.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 4 -->
-        <div class="process-step">
-          <div class="step-number-wrap">
-            <div class="step-num">04</div>
-            <div class="step-connector" aria-hidden="true"></div>
-          </div>
-          <div class="step-card">
-            <div class="step-icon-box step-icon-box--green" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M9 8h4.5a2.5 2.5 0 0 1 0 5H9v-5z" stroke-linecap="round"/>
-                <path d="M9 13h5a2.5 2.5 0 0 1 0 5H9v-5z" stroke-linecap="round"/>
-                <line x1="11" y1="6" x2="11" y2="8"/><line x1="13" y1="6" x2="13" y2="8"/>
-                <line x1="11" y1="18" x2="11" y2="20"/><line x1="13" y1="18" x2="13" y2="20"/>
-              </svg>
-            </div>
-            <div class="step-body">
-              <span class="step-tag step-tag--green">STEP 04</span>
-              <h3 class="step-title">BCH ANCHOR</h3>
-              <p class="step-desc">The SHA-256 hash is anchored to Bitcoin Cash via an OP_RETURN transaction—permanently.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 5 -->
-        <div class="process-step">
-          <div class="step-number-wrap">
-            <div class="step-num step-num--last">05</div>
-          </div>
-          <div class="step-card">
-            <div class="step-icon-box" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-            </div>
-            <div class="step-body">
-              <span class="step-tag">STEP 05</span>
-              <h3 class="step-title">VERIFY ANYTIME</h3>
-              <p class="step-desc">Anyone can verify the record by comparing the stored hash against on-chain data—no trust required.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════
-         CORE FEATURES
-    ══════════════════════════════════════════ -->
-    <section id="features" class="features-section" aria-labelledby="features-title">
-      <div class="section-label-tag" aria-hidden="true">// CORE CAPABILITIES</div>
-      <h2 class="section-title" id="features-title">CORE FEATURES</h2>
-      <p class="section-subtitle">Every layer of ChainTrace is purpose-built for trust, integrity, and verifiability.</p>
-
-      <div class="features-grid">
-        <div class="feature-card" id="feat-scan">
-          <div class="feature-icon-wrap" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="3" y="7" width="18" height="14" rx="2"/>
-              <path d="M8 7V5a4 4 0 0 1 8 0v2"/>
-              <circle cx="12" cy="14" r="2"/>
-            </svg>
-          </div>
-          <div class="feature-tag">HARDWARE</div>
-          <h3>HARDWARE-BASED SCAN LOGGING</h3>
-          <p>Custom ESP32 node captures every custody handoff with precision and reliability.</p>
-        </div>
-
-        <div class="feature-card" id="feat-time">
-          <div class="feature-icon-wrap" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 6v6l4 2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="feature-tag">FIRMWARE</div>
-          <h3>OFFLINE-READY TIMESTAMPING</h3>
-          <p>DS3231 RTC module ensures accurate timestamps even in zero-connectivity environments.</p>
-        </div>
-
-        <div class="feature-card" id="feat-tamper">
-          <div class="feature-icon-wrap feature-icon-wrap--red" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-              <line x1="12" y1="9" x2="12" y2="13" stroke-linecap="round"/>
-              <line x1="12" y1="17" x2="12.01" y2="17" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="feature-tag feature-tag--red">SECURITY</div>
-          <h3>TAMPER DETECTION</h3>
-          <p>Reed switch and motion sensors detect physical tampering or shock events in real time.</p>
-        </div>
-
-        <div class="feature-card" id="feat-hash">
-          <div class="feature-icon-wrap" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 2L3 7v6c0 5.25 3.75 10.15 9 11.25C17.25 23.15 21 18.25 21 13V7L12 2z"/>
-              <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="feature-tag">CRYPTOGRAPHY</div>
-          <h3>CRYPTOGRAPHIC INTEGRITY</h3>
-          <p>Every custody event is hashed using SHA-256, creating a unique, unforgeable fingerprint.</p>
-        </div>
-
-        <div class="feature-card feature-card--accent" id="feat-bch">
-          <div class="feature-icon-wrap feature-icon-wrap--bch" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M9 8h4.5a2.5 2.5 0 0 1 0 5H9v-5z" stroke-linecap="round"/>
-              <path d="M9 13h5a2.5 2.5 0 0 1 0 5H9v-5z" stroke-linecap="round"/>
-              <line x1="11" y1="6" x2="11" y2="8"/><line x1="13" y1="6" x2="13" y2="8"/>
-              <line x1="11" y1="18" x2="11" y2="20"/><line x1="13" y1="18" x2="13" y2="20"/>
-            </svg>
-          </div>
-          <div class="feature-tag feature-tag--bch">BLOCKCHAIN</div>
-          <h3>BITCOIN CASH ANCHORING</h3>
-          <p>Hashes anchored on-chain via OP_RETURN—providing permanent, public, tamper-proof proof of record.</p>
-        </div>
-
-        <div class="feature-card" id="feat-verify">
-          <div class="feature-icon-wrap" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
-          </div>
-          <div class="feature-tag">TRANSPARENCY</div>
-          <h3>INDEPENDENT VERIFICATION</h3>
-          <p>Anyone can verify records without trusting the system operator—open, permissionless, and auditable.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════
-         SYSTEM ARCHITECTURE
-    ══════════════════════════════════════════ -->
-    <section id="architecture" class="architecture-section" aria-labelledby="arch-title">
-      <div class="section-label-tag" aria-hidden="true">// SYSTEM DESIGN</div>
-      <h2 class="section-title" id="arch-title">SYSTEM ARCHITECTURE</h2>
-      <p class="section-subtitle">A five-layer pipeline from physical hardware to immutable blockchain record.</p>
-
-      <div class="arch-pipeline">
-        <div class="arch-layer" id="arch-esp32">
-          <div class="arch-layer-side">
-            <span class="arch-layer-num">L1</span>
-            <div class="arch-layer-line" aria-hidden="true"></div>
-          </div>
-          <div class="arch-layer-card arch-layer-card--hardware">
-            <div class="arch-layer-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="4" y="4" width="16" height="16" rx="2"/>
-                <rect x="9" y="9" width="6" height="6" rx="1"/>
-                <path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/>
-              </svg>
-            </div>
-            <div class="arch-layer-body">
-              <div class="arch-layer-badge arch-layer-badge--hardware">HARDWARE LAYER</div>
-              <h3>ESP32 SCAN NODE</h3>
-              <p>RFID RC522 reader · DS3231 RTC · Reed tamper switch · Wi-Fi uplink · Local SHA-256 hashing</p>
-            </div>
-            <div class="arch-layer-status">
-              <span class="arch-dot arch-dot--green" aria-hidden="true"></span>
-              <span>ACTIVE</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="arch-connector-vert" aria-hidden="true">
-          <svg viewBox="0 0 20 40" fill="none">
-            <line x1="10" y1="0" x2="10" y2="40" stroke="#00d4d4" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
-            <polygon points="5,32 10,40 15,32" fill="#00d4d4" opacity="0.6"/>
-          </svg>
-        </div>
-
-        <div class="arch-layer" id="arch-api">
-          <div class="arch-layer-side">
-            <span class="arch-layer-num">L2</span>
-            <div class="arch-layer-line" aria-hidden="true"></div>
-          </div>
-          <div class="arch-layer-card arch-layer-card--backend">
-            <div class="arch-layer-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="2" y="3" width="20" height="14" rx="2"/>
-                <path d="M8 21h8M12 17v4" stroke-linecap="round"/>
-                <path d="M6 8h.01M10 8h8" stroke-linecap="round"/>
-                <path d="M6 11h.01M10 11h5" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="arch-layer-body">
-              <div class="arch-layer-badge arch-layer-badge--backend">BACKEND LAYER</div>
-              <h3>DJANGO REST API</h3>
-              <p>Receives scan events · Validates payload · Stores to PostgreSQL · Queues anchor jobs</p>
-            </div>
-            <div class="arch-layer-status">
-              <span class="arch-dot arch-dot--green" aria-hidden="true"></span>
-              <span>ONLINE</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="arch-connector-vert" aria-hidden="true">
-          <svg viewBox="0 0 20 40" fill="none">
-            <line x1="10" y1="0" x2="10" y2="40" stroke="#00d4d4" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
-            <polygon points="5,32 10,40 15,32" fill="#00d4d4" opacity="0.6"/>
-          </svg>
-        </div>
-
-        <div class="arch-layer" id="arch-db">
-          <div class="arch-layer-side">
-            <span class="arch-layer-num">L3</span>
-            <div class="arch-layer-line" aria-hidden="true"></div>
-          </div>
-          <div class="arch-layer-card arch-layer-card--data">
-            <div class="arch-layer-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <ellipse cx="12" cy="5" rx="9" ry="3"/>
-                <path d="M21 5v6c0 1.66-4.03 3-9 3S3 12.66 3 11V5"/>
-                <path d="M21 11v6c0 1.66-4.03 3-9 3S3 18.66 3 17v-6"/>
-              </svg>
-            </div>
-            <div class="arch-layer-body">
-              <div class="arch-layer-badge arch-layer-badge--data">DATA LAYER</div>
-              <h3>POSTGRESQL DATABASE</h3>
-              <p>Custody records · Hash index · Anchor status · Event metadata · Verification log</p>
-            </div>
-            <div class="arch-layer-status">
-              <span class="arch-dot arch-dot--green" aria-hidden="true"></span>
-              <span>SYNCED</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="arch-connector-vert" aria-hidden="true">
-          <svg viewBox="0 0 20 40" fill="none">
-            <line x1="10" y1="0" x2="10" y2="40" stroke="#00d4d4" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
-            <polygon points="5,32 10,40 15,32" fill="#00d4d4" opacity="0.6"/>
-          </svg>
-        </div>
-
-        <div class="arch-layer" id="arch-anchor">
-          <div class="arch-layer-side">
-            <span class="arch-layer-num">L4</span>
-            <div class="arch-layer-line" aria-hidden="true"></div>
-          </div>
-          <div class="arch-layer-card arch-layer-card--anchor">
-            <div class="arch-layer-icon arch-layer-icon--anchor" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M9 8h4.5a2.5 2.5 0 0 1 0 5H9v-5z" stroke-linecap="round"/>
-                <path d="M9 13h5a2.5 2.5 0 0 1 0 5H9v-5z" stroke-linecap="round"/>
-                <line x1="11" y1="6" x2="11" y2="8"/><line x1="13" y1="6" x2="13" y2="8"/>
-                <line x1="11" y1="18" x2="11" y2="20"/><line x1="13" y1="18" x2="13" y2="20"/>
-              </svg>
-            </div>
-            <div class="arch-layer-body">
-              <div class="arch-layer-badge arch-layer-badge--anchor">BLOCKCHAIN LAYER</div>
-              <h3>BITCOIN CASH CHIPNET</h3>
-              <p>OP_RETURN anchoring · Transaction hash stored · Publicly auditable · Tamper-proof finality</p>
-            </div>
-            <div class="arch-layer-status arch-layer-status--bch">
-              <span class="arch-dot arch-dot--bch" aria-hidden="true"></span>
-              <span>ANCHORED</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Side branch — Verification Dashboard -->
-        <div class="arch-side-branch" aria-hidden="true">
-          <svg viewBox="0 0 120 40" fill="none">
-            <line x1="0" y1="20" x2="100" y2="20" stroke="#00d4d4" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>
-            <polygon points="92,15 100,20 92,25" fill="#00d4d4" opacity="0.5"/>
-          </svg>
-          <div class="arch-layer-card arch-layer-card--verify">
-            <div class="arch-layer-body">
-              <div class="arch-layer-badge arch-layer-badge--verify">VERIFICATION</div>
-              <h3>DASHBOARD</h3>
-              <p>Public hash lookup · On-chain proof display · Chain-of-custody timeline</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════
-         PROJECT STATUS
-    ══════════════════════════════════════════ -->
-    <section id="project" class="project-status" aria-labelledby="project-title">
-      <div class="section-label-tag" aria-hidden="true">// BUILD PROGRESS</div>
-      <h2 class="section-title" id="project-title">PROJECT STATUS</h2>
-      <p class="section-subtitle">Current development milestones and build pipeline status.</p>
-
-      <div class="timeline-grid">
-        <div class="timeline-card timeline-card--active" id="tl-backend">
-          <div class="timeline-card-header">
-            <div class="timeline-indicator">
-              <span class="tl-dot tl-dot--active" aria-hidden="true"></span>
-              <span class="tl-badge tl-badge--active">IN PROGRESS</span>
-            </div>
-            <span class="tl-num">01</span>
-          </div>
-          <div class="tl-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="2" y="3" width="20" height="14" rx="2"/>
-              <path d="M8 21h8M12 17v4" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3 class="tl-title">Backend API</h3>
-          <p class="tl-desc">Django REST endpoints, custody model, and anchor queue service.</p>
-          <div class="tl-progress-bar" aria-hidden="true">
-            <div class="tl-progress-fill" style="width:70%"></div>
-          </div>
-          <span class="tl-pct">70%</span>
-        </div>
-
-        <div class="timeline-card timeline-card--active" id="tl-frontend">
-          <div class="timeline-card-header">
-            <div class="timeline-indicator">
-              <span class="tl-dot tl-dot--active" aria-hidden="true"></span>
-              <span class="tl-badge tl-badge--active">IN PROGRESS</span>
-            </div>
-            <span class="tl-num">02</span>
-          </div>
-          <div class="tl-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5z"/>
-              <path d="M14 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5z"/>
-              <path d="M14 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6z"/>
-              <path d="M4 14a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6z"/>
-            </svg>
-          </div>
-          <h3 class="tl-title">Frontend</h3>
-          <p class="tl-desc">Vue 3 dashboard, verification UI, and landing page.</p>
-          <div class="tl-progress-bar" aria-hidden="true">
-            <div class="tl-progress-fill" style="width:65%"></div>
-          </div>
-          <span class="tl-pct">65%</span>
-        </div>
-
-        <div class="timeline-card timeline-card--active" id="tl-hw">
-          <div class="timeline-card-header">
-            <div class="timeline-indicator">
-              <span class="tl-dot tl-dot--active" aria-hidden="true"></span>
-              <span class="tl-badge tl-badge--active">IN PROGRESS</span>
-            </div>
-            <span class="tl-num">03</span>
-          </div>
-          <div class="tl-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="4" y="4" width="16" height="16" rx="2"/>
-              <rect x="9" y="9" width="6" height="6" rx="1"/>
-              <path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/>
-            </svg>
-          </div>
-          <h3 class="tl-title">Hardware Prototype</h3>
-          <p class="tl-desc">ESP32 breadboard prototype with RFID RC522 and DS3231 RTC.</p>
-          <div class="tl-progress-bar" aria-hidden="true">
-            <div class="tl-progress-fill" style="width:80%"></div>
-          </div>
-          <span class="tl-pct">80%</span>
-        </div>
-
-        <div class="timeline-card timeline-card--pending" id="tl-pcb">
-          <div class="timeline-card-header">
-            <div class="timeline-indicator">
-              <span class="tl-dot tl-dot--pending" aria-hidden="true"></span>
-              <span class="tl-badge tl-badge--pending">PENDING</span>
-            </div>
-            <span class="tl-num">04</span>
-          </div>
-          <div class="tl-icon tl-icon--dim" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-              <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
-          </div>
-          <h3 class="tl-title">PCB Design Rev 1</h3>
-          <p class="tl-desc">Schematic capture, layout routing, and DRC validation in KiCad.</p>
-          <div class="tl-progress-bar" aria-hidden="true">
-            <div class="tl-progress-fill tl-progress-fill--pending" style="width:0%"></div>
-          </div>
-          <span class="tl-pct tl-pct--dim">—</span>
-        </div>
-
-        <div class="timeline-card timeline-card--pending" id="tl-fab">
-          <div class="timeline-card-header">
-            <div class="timeline-indicator">
-              <span class="tl-dot tl-dot--pending" aria-hidden="true"></span>
-              <span class="tl-badge tl-badge--pending">PENDING</span>
-            </div>
-            <span class="tl-num">05</span>
-          </div>
-          <div class="tl-icon tl-icon--dim" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-            </svg>
-          </div>
-          <h3 class="tl-title">PCB Fab &amp; Bring-up</h3>
-          <p class="tl-desc">PCB fabrication, component assembly, and hardware bring-up testing.</p>
-          <div class="tl-progress-bar" aria-hidden="true">
-            <div class="tl-progress-fill tl-progress-fill--pending" style="width:0%"></div>
-          </div>
-          <span class="tl-pct tl-pct--dim">—</span>
-        </div>
-
-        <div class="timeline-card timeline-card--pending" id="tl-eval">
-          <div class="timeline-card-header">
-            <div class="timeline-indicator">
-              <span class="tl-dot tl-dot--pending" aria-hidden="true"></span>
-              <span class="tl-badge tl-badge--pending">PENDING</span>
-            </div>
-            <span class="tl-num">06</span>
-          </div>
-          <div class="tl-icon tl-icon--dim" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M9 11l3 3L22 4"/>
-              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-            </svg>
-          </div>
-          <h3 class="tl-title">System Integration &amp; Evaluation</h3>
-          <p class="tl-desc">End-to-end integration testing, performance benchmarks, and final evaluation.</p>
-          <div class="tl-progress-bar" aria-hidden="true">
-            <div class="tl-progress-fill tl-progress-fill--pending" style="width:0%"></div>
-          </div>
-          <span class="tl-pct tl-pct--dim">—</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
          TECH STACK
-    ══════════════════════════════════════════ -->
-    <section id="tech" class="tech-stack" aria-labelledby="tech-title">
-      <div class="section-label-tag" aria-hidden="true">// TECHNOLOGY</div>
-      <h2 class="section-title" id="tech-title">TECH STACK</h2>
-      <p class="section-subtitle">Purpose-selected technologies for reliability, security, and scale.</p>
-
-      <div class="tech-grid">
-        <div class="tech-card" id="tech-esp32">
-          <div class="tech-card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="4" y="4" width="16" height="16" rx="2"/>
-              <rect x="9" y="9" width="6" height="6" rx="1"/>
-              <path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/>
-            </svg>
+    ═══════════════════════════════════════════════ -->
+    <section id="tech" class="tech-section" aria-label="Technology stack">
+      <div class="container">
+        <span class="label">Technology Stack</span>
+        <h2 class="section-title" style="margin-top:20px;">Built on proven foundations</h2>
+        <div class="tech-grid">
+          <div class="tech-card" v-for="tech in techStack" :key="tech.name">
+            <div class="tech-icon" v-html="tech.icon" aria-hidden="true"></div>
+            <div class="tech-name">{{ tech.name }}</div>
+            <div class="tech-sub">{{ tech.sub }}</div>
           </div>
-          <span class="tech-card-name">ESP32</span>
-          <span class="tech-card-layer">FIRMWARE</span>
-        </div>
-
-        <div class="tech-card" id="tech-rfid">
-          <div class="tech-card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="3" y="7" width="18" height="14" rx="2"/>
-              <path d="M8 7V5a4 4 0 0 1 8 0v2"/>
-              <circle cx="12" cy="14" r="2"/>
-            </svg>
-          </div>
-          <span class="tech-card-name">RFID RC522</span>
-          <span class="tech-card-layer">HARDWARE</span>
-        </div>
-
-        <div class="tech-card" id="tech-django">
-          <div class="tech-card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M3 3h18v18H3z" rx="2"/>
-              <path d="M3 9h18M9 21V9"/>
-            </svg>
-          </div>
-          <span class="tech-card-name">Django</span>
-          <span class="tech-card-layer">BACKEND</span>
-        </div>
-
-        <div class="tech-card" id="tech-postgres">
-          <div class="tech-card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <ellipse cx="12" cy="5" rx="9" ry="3"/>
-              <path d="M21 5v6c0 1.66-4.03 3-9 3S3 12.66 3 11V5"/>
-              <path d="M21 11v6c0 1.66-4.03 3-9 3S3 18.66 3 17v-6"/>
-            </svg>
-          </div>
-          <span class="tech-card-name">PostgreSQL</span>
-          <span class="tech-card-layer">DATABASE</span>
-        </div>
-
-        <div class="tech-card" id="tech-vue">
-          <div class="tech-card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M2 3h4l6 10 6-10h4L12 21 2 3z"/>
-              <path d="M6 3l6 10 6-10" opacity="0.5"/>
-            </svg>
-          </div>
-          <span class="tech-card-name">Vue 3</span>
-          <span class="tech-card-layer">FRONTEND</span>
-        </div>
-
-        <div class="tech-card tech-card--accent" id="tech-bch">
-          <div class="tech-card-icon tech-card-icon--bch" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M9 8h4.5a2.5 2.5 0 0 1 0 5H9v-5z" stroke-linecap="round"/>
-              <path d="M9 13h5a2.5 2.5 0 0 1 0 5H9v-5z" stroke-linecap="round"/>
-              <line x1="11" y1="6" x2="11" y2="8"/><line x1="13" y1="6" x2="13" y2="8"/>
-              <line x1="11" y1="18" x2="11" y2="20"/><line x1="13" y1="18" x2="13" y2="20"/>
-            </svg>
-          </div>
-          <span class="tech-card-name">Bitcoin Cash</span>
-          <span class="tech-card-layer tech-card-layer--bch">BLOCKCHAIN</span>
-        </div>
-
-        <div class="tech-card" id="tech-docker">
-          <div class="tech-card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M22 12.5c0 .5-.4 1.5-2 2.5-2 1-4 1-6 0"/>
-              <rect x="2" y="9" width="3" height="3" rx="0.5"/>
-              <rect x="6" y="9" width="3" height="3" rx="0.5"/>
-              <rect x="10" y="9" width="3" height="3" rx="0.5"/>
-              <rect x="6" y="5" width="3" height="3" rx="0.5"/>
-              <rect x="10" y="5" width="3" height="3" rx="0.5"/>
-              <path d="M2 13c0 3 2 5 9 5s11-2 11-5" opacity="0.5"/>
-            </svg>
-          </div>
-          <span class="tech-card-name">Docker</span>
-          <span class="tech-card-layer">DEVOPS</span>
-        </div>
-
-        <div class="tech-card" id="tech-kicad">
-          <div class="tech-card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-              <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
-          </div>
-          <span class="tech-card-name">KiCad</span>
-          <span class="tech-card-layer">PCB DESIGN</span>
         </div>
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
-         CTA SECTION
-    ══════════════════════════════════════════ -->
-    <section id="contact" class="cta-section" aria-labelledby="cta-title">
-      <div class="cta-grid-overlay" aria-hidden="true"></div>
+    <!-- ═══════════════════════════════════════════════
+         CTA
+    ═══════════════════════════════════════════════ -->
+    <section id="cta" class="cta-section" aria-label="Call to action">
+      <div class="blueprint-bg" style="opacity:0.2;" aria-hidden="true"></div>
       <div class="cta-glow" aria-hidden="true"></div>
-
-      <div class="cta-inner">
-        <div class="cta-tag" aria-hidden="true">
-          <span class="tl-dot tl-dot--active" aria-hidden="true"></span>
-          SYSTEM LIVE · CHIPNET ACTIVE
-        </div>
-
-        <h2 class="cta-title" id="cta-title">
-          TRUST THE RECORD.<br>
-          <span class="highlight-cyan">VERIFY THE PROOF.</span>
+      <div class="container" style="position:relative;z-index:2;text-align:center;">
+        <span class="label">Capstone Thesis — Eastern Samar State University</span>
+        <h2 class="cta-headline">
+          Trust the evidence.<br/>
+          <span class="gradient-text">Verify the chain.</span>
         </h2>
-        <p class="cta-desc">
-          ChainTrace makes every custody handoff transparent, tamper-evident, and verifiable—forever on the Bitcoin Cash blockchain.
-        </p>
-
-        <div class="hero-actions cta-actions">
-          <button id="btn-cta-explore" class="btn btn-primary" @click="goTo('/dashboard')">
-            EXPLORE THE SYSTEM <span class="btn-arrow">→</span>
-          </button>
-          <button id="btn-cta-verify" class="btn btn-secondary" @click="goTo('/verify')">
-            VERIFY A RECORD <span class="btn-arrow">↗</span>
-          </button>
-        </div>
-
-        <!-- Mini stats row -->
-        <div class="cta-stats" aria-label="System statistics">
-          <div class="cta-stat">
-            <span class="cta-stat-value">SHA-256</span>
-            <span class="cta-stat-label">HASH ALGORITHM</span>
-          </div>
-          <div class="cta-stat-divider" aria-hidden="true"></div>
-          <div class="cta-stat">
-            <span class="cta-stat-value">OP_RETURN</span>
-            <span class="cta-stat-label">ANCHOR METHOD</span>
-          </div>
-          <div class="cta-stat-divider" aria-hidden="true"></div>
-          <div class="cta-stat">
-            <span class="cta-stat-value">BCH CHIPNET</span>
-            <span class="cta-stat-label">TARGET NETWORK</span>
-          </div>
+        <p class="cta-sub">Built for forensic accountability, academic research, and secure asset custody.</p>
+        <div class="cta-btns">
+          <a href="#architecture" class="btn btn-primary">Explore the Research</a>
+          <router-link to="/verify" class="btn btn-outline">Open Verification Portal</router-link>
         </div>
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
          FOOTER
-    ══════════════════════════════════════════ -->
-    <footer class="landing-footer">
-      <div class="footer-top">
+    ═══════════════════════════════════════════════ -->
+    <footer id="footer" class="landing-footer" role="contentinfo">
+      <div class="footer-inner">
         <div class="footer-brand">
-          <div class="footer-logo-wrap">
-            <div class="logo-icon logo-icon--sm" aria-hidden="true">
-              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="20,4 34,12 20,20 6,12" fill="rgba(0,212,212,0.15)" stroke="#00d4d4" stroke-width="1.2"/>
-                <polygon points="6,12 20,20 20,36 6,28" fill="rgba(0,212,212,0.08)" stroke="#00d4d4" stroke-width="1.2"/>
-                <polygon points="34,12 20,20 20,36 34,28" fill="rgba(0,100,255,0.12)" stroke="#00b4ff" stroke-width="1.2"/>
-              </svg>
-            </div>
+          <div class="footer-logo-row">
+            <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <polygon points="18,2 33,9.5 33,26.5 18,34 3,26.5 3,9.5" fill="none" stroke="#3B82F6" stroke-width="1.2"/>
+              <circle cx="13" cy="16" r="2.5" fill="none" stroke="#06B6D4" stroke-width="1.2"/>
+              <circle cx="23" cy="16" r="2.5" fill="none" stroke="#06B6D4" stroke-width="1.2"/>
+              <line x1="15.5" y1="16" x2="20.5" y2="16" stroke="#06B6D4" stroke-width="1.2"/>
+            </svg>
             <span class="footer-wordmark">CHAINTRACE</span>
           </div>
-          <p class="footer-tagline">TRACE. VERIFY. TRUST.</p>
-          <p class="footer-about">A Bitcoin Cash–anchored chain-of-custody system with custom ESP32 IoT scan-logging hardware.</p>
+          <div class="footer-inst">
+            Eastern Samar State University<br/>
+            College of Engineering — Capstone Project
+          </div>
         </div>
-
-        <div class="footer-links-col">
-          <span class="footer-col-title">NAVIGATION</span>
-          <a href="#home" class="footer-link">Home</a>
-          <a href="#overview" class="footer-link">Overview</a>
-          <a href="#architecture" class="footer-link">Architecture</a>
-          <a href="#features" class="footer-link">Features</a>
-          <a href="#tech" class="footer-link">Tech Stack</a>
-          <a href="#project" class="footer-link">Project</a>
-        </div>
-
-        <div class="footer-links-col">
-          <span class="footer-col-title">SYSTEM</span>
-          <a href="/dashboard" class="footer-link" @click.prevent="goTo('/dashboard')">Dashboard</a>
-          <a href="/verify" class="footer-link" @click.prevent="goTo('/verify')">Verify Record</a>
-          <a href="/login" class="footer-link" @click.prevent="goTo('/login')">Login</a>
-        </div>
-
-        <div class="footer-links-col">
-          <span class="footer-col-title">BUILT WITH</span>
-          <span class="footer-tech-tag">ESP32 · RFID RC522</span>
-          <span class="footer-tech-tag">Django · PostgreSQL</span>
-          <span class="footer-tech-tag">Vue 3 · Vite</span>
-          <span class="footer-tech-tag footer-tech-tag--bch">Bitcoin Cash Chipnet</span>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <div class="footer-bottom-left">
-          <span class="footer-status-dot" aria-hidden="true"></span>
-          <span class="footer-status-text">BCH CHIPNET · SYSTEM ONLINE</span>
-        </div>
-        <p class="footer-copy">
-          © 2024 ChainTrace Capstone Project &nbsp;·&nbsp; Eastern Samar State University – College of Engineering
-        </p>
-        <div class="footer-bottom-hash" aria-hidden="true">
-          <span class="footer-hash-label">LATEST TX</span>
-          <span class="footer-hash-value">0x9d1f...b347</span>
+        <ul class="footer-links">
+          <li><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="#timeline">Documentation</a></li>
+          <li><a href="mailto:chaintrace@essu.edu.ph">Email</a></li>
+          <li><router-link to="/dashboard">Dashboard</router-link></li>
+        </ul>
+        <div class="footer-copy">
+          © 2025 ChainTrace. Capstone Thesis.<br/>All rights reserved.
         </div>
       </div>
     </footer>
+
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
-const router = useRouter()
-const bgCanvas = ref(null)
-let animFrame = null
-let resizeHandler = null
-
-const goTo = (path) => {
-  router.push(path)
-}
-
-function initCanvas() {
-  const canvas = bgCanvas.value
-  if (!canvas) return
-  const ctx = canvas.getContext('2d')
-
-  const resize = () => {
-    canvas.width = window.innerWidth
-    canvas.height = document.documentElement.scrollHeight
-  }
-  resize()
-  resizeHandler = resize
-  window.addEventListener('resize', resize)
-
-  const PARTICLE_COUNT = 70
-  const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: Math.random() * 1.4 + 0.3,
-    vx: (Math.random() - 0.5) * 0.22,
-    vy: (Math.random() - 0.5) * 0.22,
-    alpha: Math.random() * 0.45 + 0.08,
-  }))
-
-  const draw = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-    // Technical grid
-    ctx.strokeStyle = 'rgba(0, 180, 200, 0.035)'
-    ctx.lineWidth = 0.5
-    const g = 60
-    for (let x = 0; x < canvas.width; x += g) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke()
-    }
-    for (let y = 0; y < canvas.height; y += g) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke()
-    }
-
-    // Particles + connections
-    particles.forEach(p => {
-      p.x += p.vx; p.y += p.vy
-      if (p.x < 0) p.x = canvas.width
-      if (p.x > canvas.width) p.x = 0
-      if (p.y < 0) p.y = canvas.height
-      if (p.y > canvas.height) p.y = 0
-      ctx.beginPath()
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(0,212,212,${p.alpha})`
-      ctx.fill()
-    })
-
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x
-        const dy = particles[i].y - particles[j].y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        if (dist < 110) {
-          ctx.beginPath()
-          ctx.moveTo(particles[i].x, particles[i].y)
-          ctx.lineTo(particles[j].x, particles[j].y)
-          ctx.strokeStyle = `rgba(0,180,200,${0.055 * (1 - dist / 110)})`
-          ctx.lineWidth = 0.5
-          ctx.stroke()
-        }
-      }
-    }
-
-    animFrame = requestAnimationFrame(draw)
-  }
-  draw()
-}
-
+// ── Nav scroll ──────────────────────────────────────────────────────────────
+const isScrolled = ref(false)
+const handleScroll = () => { isScrolled.value = window.scrollY > 20 }
 onMounted(() => {
-  initCanvas()
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  setupFadeObserver()
 })
+onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
-onBeforeUnmount(() => {
-  if (animFrame) cancelAnimationFrame(animFrame)
-  if (resizeHandler) window.removeEventListener('resize', resizeHandler)
-})
+// ── Fade-up observer ────────────────────────────────────────────────────────
+function setupFadeObserver() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target) } })
+  }, { threshold: 0.15 })
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el))
+}
+
+// ── Architecture data ───────────────────────────────────────────────────────
+const archNodes = [
+  { icon: `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="rgba(59,130,246,0.8)" stroke-width="1.5"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M8 6V4a2 2 0 014 0v2"/><circle cx="12" cy="13" r="2"/></svg>`, title: 'ESP32 Scan Node', sub: 'RFID + RTC + IMU' },
+  { icon: `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="rgba(59,130,246,0.8)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`, title: 'Secure API Gateway', sub: 'HMAC Auth / TLS 1.3' },
+  { icon: `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="rgba(59,130,246,0.8)" stroke-width="1.5"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>`, title: 'Django REST Backend', sub: 'Python / DRF' },
+  { icon: `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="rgba(59,130,246,0.8)" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`, title: 'PostgreSQL Ledger', sub: 'Immutable Records' },
+  { icon: `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="rgba(59,130,246,0.8)" stroke-width="1.5"><path d="M4 12V4l4 4M4 4h4M20 12v8l-4-4M20 20h-4"/><line x1="4" y1="12" x2="20" y2="12"/></svg>`, title: 'Anchor Queue', sub: 'Batch + Retry' },
+  { icon: `<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="rgba(59,130,246,0.9)" stroke-width="1.5"><rect x="4" y="8" width="16" height="8" rx="1"/><line x1="8" y1="8" x2="8" y2="4"/><line x1="12" y1="8" x2="12" y2="4"/><line x1="16" y1="8" x2="16" y2="4"/><line x1="4" y1="16" x2="4" y2="20"/><line x1="20" y1="16" x2="20" y2="20"/></svg>`, title: 'Bitcoin Cash', sub: 'OP_RETURN / Chipnet' },
+]
+const verifyNodes = [
+  { icon: `<svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="rgba(6,182,212,0.8)" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>`, title: 'Verification Dashboard', sub: 'Vue 3 SPA' },
+  { icon: `<svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="rgba(6,182,212,0.8)" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`, title: 'Blockchain Explorer', sub: 'BCH Explorer API' },
+  { icon: `<svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="rgba(6,182,212,0.8)" stroke-width="1.5"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>`, title: 'On-chain Proof', sub: 'OP_RETURN Hash' },
+]
+
+// ── Verification console ────────────────────────────────────────────────────
+const txid = ref('a3f9c82e1b4d7f0e9c3a5b8d2e6f1a4c7890abcdef1234567890abcdef123456')
+const payloadHash = ref('sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069')
+const network = ref('chipnet')
+const verifying = ref(false)
+const terminalLines = ref([])
+
+async function runVerification() {
+  verifying.value = true
+  terminalLines.value = []
+  const steps = [
+    { text: 'Connecting to BCH Chipnet node...', delay: 200 },
+    { text: 'Fetching transaction a3f9c82e...', delay: 700 },
+    { text: 'Parsing OP_RETURN output...', delay: 1200 },
+    { text: 'Computing SHA-256 of local payload...', delay: 1700 },
+    { text: 'Comparing hashes: 7f83b165...9069 ✓', delay: 2200 },
+    { text: '<span style="color:#22C55E">✓ VERIFICATION PASSED — Block #849122</span>', delay: 2700 },
+  ]
+  for (const step of steps) {
+    await new Promise(r => setTimeout(r, step.delay - (steps.indexOf(step) > 0 ? steps[steps.indexOf(step)-1].delay : 0)))
+    terminalLines.value.push(step.text)
+  }
+  verifying.value = false
+}
+
+// ── Timeline ────────────────────────────────────────────────────────────────
+const phases = [
+  { title: 'Research & Proposal',          status: 'done',   label: 'Complete'    },
+  { title: 'Hardware Prototyping',          status: 'done',   label: 'Complete'    },
+  { title: 'PCB Design',                    status: 'done',   label: 'Complete'    },
+  { title: 'Backend Development',           status: 'done',   label: 'Complete'    },
+  { title: 'Frontend Verification Portal',  status: 'active', label: 'In Progress' },
+  { title: 'Blockchain Integration',        status: 'pending',label: 'Pending'     },
+  { title: 'Evaluation & Testing',          status: 'pending',label: 'Pending'     },
+]
+
+// ── Tech stack ──────────────────────────────────────────────────────────────
+const techStack = [
+  { name: 'ESP32', sub: 'Microcontroller', icon: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="8" y="8" width="24" height="24" rx="2"/><line x1="4" y1="14" x2="8" y2="14"/><line x1="4" y1="20" x2="8" y2="20"/><line x1="4" y1="26" x2="8" y2="26"/><line x1="32" y1="14" x2="36" y2="14"/><line x1="32" y1="20" x2="36" y2="20"/><line x1="32" y1="26" x2="36" y2="26"/><rect x="14" y="14" width="12" height="12" rx="1" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.4)"/></svg>` },
+  { name: 'RC522 RFID', sub: '13.56 MHz Reader', icon: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="12" y="14" width="16" height="12" rx="2"/><path d="M8 20 Q8 10 20 10 Q32 10 32 20"/><path d="M5 20 Q5 7 20 7 Q35 7 35 20"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>` },
+  { name: 'DS3231 RTC', sub: '±2ppm Accuracy', icon: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="14"/><polyline points="20,10 20,20 26,26"/><circle cx="20" cy="20" r="1.5" fill="currentColor"/></svg>` },
+  { name: 'MPU6050', sub: '6-DOF IMU', icon: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="10" y="10" width="20" height="20" rx="2"/><line x1="20" y1="10" x2="20" y2="4"/><line x1="20" y1="30" x2="20" y2="36"/><line x1="10" y1="20" x2="4" y2="20"/><line x1="30" y1="20" x2="36" y2="20"/><circle cx="20" cy="20" r="4" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.4)"/></svg>` },
+  { name: 'Django', sub: 'REST Framework', icon: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="8,18 2,12 8,6"/><polyline points="32,18 38,12 32,6"/><line x1="24" y1="4" x2="16" y2="36"/><rect x="10" y="24" width="20" height="12" rx="2"/></svg>` },
+  { name: 'PostgreSQL', sub: 'Custody Ledger', icon: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><ellipse cx="20" cy="12" rx="12" ry="4"/><path d="M8 12v8c0 2.2 5.4 4 12 4s12-1.8 12-4v-8"/><path d="M8 20v8c0 2.2 5.4 4 12 4s12-1.8 12-4v-8"/></svg>` },
+  { name: 'Vue 3', sub: 'Verify Portal', icon: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><polygon points="20,6 36,34 4,34"/><polygon points="20,14 30,30 10,30" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.4)"/></svg>` },
+  { name: 'Docker', sub: 'Containerized Deploy', icon: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="18" width="32" height="12" rx="2"/><rect x="8" y="14" width="7" height="5" rx="1"/><rect x="17" y="14" width="7" height="5" rx="1"/><rect x="26" y="14" width="7" height="5" rx="1"/><rect x="12" y="10" width="7" height="5" rx="1"/><rect x="21" y="10" width="7" height="5" rx="1"/></svg>` },
+  { name: 'Bitcoin Cash', sub: 'BCH / Chipnet', icon: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="14"/><path d="M16 14h7c2 0 4 1 4 3s-2 3-4 3h-7M16 20h8c2.5 0 4 1 4 3.5S26.5 27 24 27H16"/><line x1="18" y1="12" x2="18" y2="30"/><line x1="22" y1="12" x2="22" y2="30"/></svg>` },
+  { name: 'KiCad', sub: 'PCB Design', icon: `<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="6" y="6" width="28" height="28" rx="3"/><line x1="12" y1="6" x2="12" y2="34"/><line x1="20" y1="6" x2="20" y2="34"/><line x1="28" y1="6" x2="28" y2="34"/><line x1="6" y1="12" x2="34" y2="12"/><line x1="6" y1="20" x2="34" y2="20"/><line x1="6" y1="28" x2="34" y2="28"/><circle cx="20" cy="20" r="4" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.5)"/></svg>` },
+]
 </script>
 
 <style scoped>
-/* ═══════════════════════════════════════════════════════
-   BASE
-═══════════════════════════════════════════════════════ */
+/* ─── DESIGN TOKENS ──────────────────────────────────────────────────────── */
 .landing-page {
-  background-color: #040a18;
-  color: #e0e8f0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --bg-0: #050816;
+  --bg-1: #0B1220;
+  --surface: rgba(255,255,255,0.03);
+  --surface-2: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.07);
+  --border-2: rgba(96,165,250,0.18);
+  --accent: #3B82F6;
+  --accent-2: #06B6D4;
+  --text-0: #F8FAFC;
+  --text-1: #CBD5E1;
+  --text-2: #64748B;
+  --text-3: #334155;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Inter', sans-serif;
+  --radius: 20px;
+  --radius-sm: 10px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  font-family: var(--sans);
+  background: var(--bg-0);
+  color: var(--text-0);
   overflow-x: hidden;
-  position: relative;
 }
 
-.bg-canvas {
+/* ─── UTILITY ────────────────────────────────────────────────────────────── */
+.container { max-width: 1280px; margin: 0 auto; padding: 0 40px; }
+
+.label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-2);
+  padding: 5px 12px; border: 1px solid rgba(6,182,212,0.25); border-radius: 4px;
+  background: rgba(6,182,212,0.06);
+}
+.label::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent-2); box-shadow:0 0 6px var(--accent-2); }
+
+.section-title { font-size: clamp(32px,4vw,52px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--text-0); }
+.section-sub { font-size: 17px; color: var(--text-1); line-height: 1.7; max-width: 560px; }
+.section-header { margin-bottom: 64px; }
+
+.gradient-text { background: linear-gradient(135deg, #60A5FA, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px;
+  border-radius: 8px; font-size: 14px; font-weight: 600; letter-spacing: 0.01em;
+  cursor: pointer; border: none; transition: var(--transition); text-decoration: none;
+}
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 0 24px rgba(59,130,246,0.25); }
+.btn-primary:hover { background: #2563EB; box-shadow: 0 0 36px rgba(59,130,246,0.4); transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--text-1); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--border-2); color: var(--text-0); background: var(--surface); }
+.btn-outline { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 8px; font-size: 14px; font-weight: 600; background: transparent; color: var(--text-1); border: 1px solid var(--border); transition: var(--transition); text-decoration: none; }
+.btn-outline:hover { border-color: var(--border-2); color: var(--text-0); }
+
+.blueprint-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.blueprint-bg::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(59,130,246,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.035) 1px,transparent 1px); background-size:60px 60px; }
+.blueprint-bg::after { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(59,130,246,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.015) 1px,transparent 1px); background-size:12px 12px; }
+
+.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── NAVIGATION ─────────────────────────────────────────────────────────── */
+.landing-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 0 40px; height: 64px; display: flex; align-items: center;
+  border-bottom: 1px solid transparent; transition: var(--transition);
+}
+.nav-scrolled { background: rgba(5,8,22,0.88); backdrop-filter: blur(20px); border-bottom-color: var(--border); }
+.nav-inner { display: flex; align-items: center; width: 100%; }
+.nav-logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; text-decoration: none; }
+.logo-icon { width: 36px; height: 36px; }
+.nav-wordmark { font-family: var(--mono); font-size: 15px; font-weight: 600; letter-spacing: 0.15em; color: var(--text-0); }
+.nav-links { display: flex; align-items: center; gap: 2px; list-style: none; margin-left: 56px; padding: 0; }
+.nav-links a { font-size: 13px; font-weight: 500; color: var(--text-2); padding: 6px 14px; border-radius: 6px; letter-spacing: 0.01em; transition: var(--transition); text-decoration: none; }
+.nav-links a:hover { color: var(--text-0); background: var(--surface); }
+.nav-cta { margin-left: auto; }
+.btn-primary-nav {
+  display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px;
+  background: var(--accent); color: #fff; border-radius: 8px; font-size: 13px; font-weight: 600;
+  text-decoration: none; transition: var(--transition); box-shadow: 0 0 24px rgba(59,130,246,0.25);
+}
+.btn-primary-nav:hover { background: #2563EB; transform: translateY(-1px); }
+
+/* ─── HERO ───────────────────────────────────────────────────────────────── */
+.hero-section { position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; padding-top: 64px; }
+.hero-glow-l { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle,rgba(59,130,246,0.08) 0%,transparent 70%); top: -100px; left: -200px; pointer-events: none; }
+.hero-glow-r { position: absolute; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle,rgba(6,182,212,0.05) 0%,transparent 70%); bottom: -200px; right: -100px; pointer-events: none; }
+.hero-inner { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; padding: 80px 0; }
+.hero-left { max-width: 600px; }
+.hero-headline { font-size: clamp(40px,5.5vw,72px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.05; margin: 20px 0 24px; }
+.hero-para { font-size: 17px; line-height: 1.75; color: var(--text-1); margin-bottom: 36px; }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-right { position: relative; display: flex; align-items: center; justify-content: center; }
+
+/* ESP32 diagram */
+.hw-diagram { position: relative; width: 520px; height: 520px; }
+.pcb-svg { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 280px; height: 240px; }
+.hw-comp {
+  position: absolute; padding: 8px 12px; border-radius: 8px;
+  background: rgba(11,18,32,0.92); border: 1px solid var(--border-2); backdrop-filter: blur(12px);
+  font-family: var(--mono); font-size: 10px; color: var(--text-1); white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4); animation: float-comp 4s ease-in-out infinite;
+}
+.comp-name { font-size: 9px; color: var(--accent-2); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
+.comp-val { font-size: 11px; color: var(--text-0); font-weight: 500; }
+@keyframes float-comp { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-6px)} }
+.hw-comp-1 { top:20px; left:40px; animation-delay:0s; }
+.hw-comp-2 { top:40px; right:20px; animation-delay:0.5s; }
+.hw-comp-3 { bottom:80px; left:10px; animation-delay:1s; }
+.hw-comp-4 { bottom:40px; right:30px; animation-delay:1.5s; }
+.hw-comp-5 { top:130px; left:0px; animation-delay:2s; }
+.hw-comp-6 { top:140px; right:0px; animation-delay:2.5s; }
+.hw-badge { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25); border-radius: 6px; padding: 6px 14px; font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.08em; white-space: nowrap; }
+
+/* ─── METRICS ────────────────────────────────────────────────────────────── */
+.metrics-section { padding: 60px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.metrics-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.metric-card { background: var(--bg-0); padding: 36px 32px; transition: var(--transition); position: relative; }
+.metric-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); opacity:0; transition:var(--transition); }
+.metric-card:hover { background: var(--bg-1); }
+.metric-card:hover::before { opacity: 1; }
+.metric-icon { width: 40px; height: 40px; margin-bottom: 16px; color: var(--accent); }
+.metric-value { font-family: var(--mono); font-size: 28px; font-weight: 700; color: var(--text-0); letter-spacing: -0.02em; margin-bottom: 6px; }
+.metric-label { font-size: 13px; color: var(--text-2); font-weight: 500; line-height: 1.4; }
+
+/* ─── ARCHITECTURE ───────────────────────────────────────────────────────── */
+.arch-section { padding: 120px 0; position: relative; overflow: hidden; }
+.arch-flow {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 0;
+  position: relative;
+}
+.arch-flow::after {
+  content:'';
   position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  pointer-events: none;
+  top: 50%; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-2), rgba(6,182,212,0.4));
   z-index: 0;
 }
-
-/* Shared section scaffold */
-.section-label-tag {
-  text-align: center;
-  font-family: 'Courier New', monospace;
-  font-size: 0.72rem;
-  letter-spacing: 2px;
-  color: #00d4d4;
-  margin-bottom: 0.75rem;
-  opacity: 0.7;
-}
-
-.section-title {
-  text-align: center;
-  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
-  font-weight: 800;
-  letter-spacing: 3px;
-  margin: 0 0 0.75rem;
-  color: #ffffff;
-}
-
-.section-subtitle {
-  text-align: center;
-  font-size: 1rem;
-  color: #5a7a98;
-  margin: 0 auto 3.5rem;
-  max-width: 560px;
-  line-height: 1.65;
-}
-
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.75rem;
-  font-size: 0.875rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-  white-space: nowrap;
-  font-family: 'Inter', sans-serif;
-}
-.btn-primary {
-  background: #00d4d4;
-  color: #040a18;
-  box-shadow: 0 0 22px rgba(0, 212, 212, 0.38);
-}
-.btn-primary:hover {
-  background: #22eaea;
-  box-shadow: 0 0 36px rgba(0, 212, 212, 0.6);
-  transform: translateY(-1px);
-}
-.btn-secondary {
-  background: rgba(0, 212, 212, 0.05);
-  color: #00d4d4;
-  border: 1px solid rgba(0, 212, 212, 0.45);
-}
-.btn-secondary:hover {
-  background: rgba(0, 212, 212, 0.12);
-  border-color: #00d4d4;
-  box-shadow: 0 0 18px rgba(0, 212, 212, 0.2);
-  transform: translateY(-1px);
-}
-.btn-arrow { font-size: 1rem; }
-
-.highlight-cyan {
-  color: #00d4d4;
-  text-shadow: 0 0 20px rgba(0,212,212,0.55), 0 0 40px rgba(0,212,212,0.2);
-}
-
-/* ═══════════════════════════════════════════════════════
-   HEADER
-═══════════════════════════════════════════════════════ */
-.landing-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.9rem 4rem;
-  background: rgba(4, 10, 24, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(0, 212, 212, 0.18);
-  z-index: 100;
-}
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-.logo-icon {
-  width: 40px; height: 40px; flex-shrink: 0;
-  filter: drop-shadow(0 0 6px rgba(0,212,212,0.6));
-}
-.logo-icon--sm { width: 30px; height: 30px; }
-.brand-text { display: flex; flex-direction: column; line-height: 1; }
-.brand-name { font-size: 1.35rem; font-weight: 800; letter-spacing: 3px; color: #fff; line-height: 1.2; }
-.brand-tagline { font-size: 0.6rem; letter-spacing: 2px; color: #00d4d4; margin-top: 2px; font-family: 'Courier New', monospace; }
-.landing-nav { display: flex; gap: 1.75rem; }
-.nav-link {
-  color: #5a7a98;
-  text-decoration: none;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  transition: color 0.25s ease;
-  padding-bottom: 3px;
-  border-bottom: 2px solid transparent;
-}
-.nav-link:hover { color: #00d4d4; }
-.nav-link.active {
-  color: #00d4d4;
-  border-bottom-color: #00d4d4;
-  text-shadow: 0 0 8px rgba(0,212,212,0.4);
-}
-
-/* ═══════════════════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════════════════ */
-.hero-section {
-  min-height: 100vh;
-  padding: 9rem 4rem 5rem;
-  display: flex;
-  align-items: center;
-  gap: 3rem;
-  position: relative;
-  z-index: 1;
-  background:
-    radial-gradient(ellipse 60% 50% at 70% 50%, rgba(0,180,200,0.07) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 40% at 15% 60%, rgba(0,100,255,0.05) 0%, transparent 60%);
-}
-.hero-grid-overlay {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(0,212,212,0.032) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,212,212,0.032) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-}
-.hero-left {
-  flex: 0 0 45%; max-width: 45%;
-  z-index: 2;
-  display: flex; flex-direction: column; gap: 0;
-}
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.45rem 1rem;
-  border: 1px solid rgba(0,212,212,0.38);
-  border-radius: 20px;
-  background: rgba(0,212,212,0.04);
-  backdrop-filter: blur(8px);
-  margin-bottom: 2rem;
-  width: fit-content;
-}
-.status-text {
-  font-family: 'Courier New', monospace;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: #5a7a98;
-  text-transform: uppercase;
-}
-.status-text.cyan { color: #00d4d4; }
-.status-divider { color: rgba(0,212,212,0.3); font-size: 0.7rem; }
-.status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.status-green { background: #22c55e; box-shadow: 0 0 6px #22c55e; animation: pulse-green 2s ease-in-out infinite; }
-
-@keyframes pulse-green {
-  0%, 100% { opacity: 1; box-shadow: 0 0 6px #22c55e; }
-  50%       { opacity: 0.7; box-shadow: 0 0 12px #22c55e; }
-}
-
-.hero-title {
-  display: flex; flex-direction: column;
-  font-size: clamp(2.5rem, 4.5vw, 4.2rem);
-  line-height: 1.05;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin: 0 0 1.5rem;
-  color: #ffffff;
-}
-.title-line { display: block; }
-.hero-subtitle { font-size: 1.1rem; color: #c8d8e8; margin: 0 0 0.75rem; max-width: 520px; line-height: 1.65; }
-.hero-desc { font-size: 0.95rem; color: #5a7a98; margin: 0 0 2.25rem; max-width: 520px; line-height: 1.7; }
-.hero-actions { display: flex; gap: 1.25rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
-
-.metrics-panel {
-  display: flex;
-  align-items: stretch;
-  background: rgba(8,16,36,0.65);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(0,212,212,0.2);
-  border-radius: 10px;
-  overflow: hidden;
-  max-width: 520px;
-}
-.metric-item { display: flex; align-items: center; gap: 0.75rem; padding: 1.1rem 1.35rem; flex: 1; }
-.metric-icon { width: 32px; height: 32px; color: #00d4d4; flex-shrink: 0; }
-.metric-icon-bch { color: #22c55e; }
-.metric-text { display: flex; flex-direction: column; gap: 1px; }
-.metric-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; color: #fff; text-transform: uppercase; }
-.metric-sublabel { font-size: 0.6rem; letter-spacing: 0.8px; color: #00d4d4; font-family: 'Courier New', monospace; text-transform: uppercase; }
-.metric-divider { width: 1px; background: rgba(0,212,212,0.18); align-self: stretch; }
-
-/* Hero Right */
-.hero-right {
-  flex: 0 0 55%; max-width: 55%;
-  z-index: 2;
-  display: flex; justify-content: center; align-items: center;
-}
-.visual-panel {
-  position: relative;
-  width: 100%; max-width: 620px;
-  border-radius: 16px;
-  border: 1px solid rgba(0,212,212,0.3);
-  background: rgba(4,10,24,0.4);
-  backdrop-filter: blur(4px);
-  overflow: hidden;
-  box-shadow: 0 0 40px rgba(0,212,212,0.08), inset 0 0 60px rgba(0,100,200,0.04);
-  aspect-ratio: 16/11;
-}
-.panel-glow-ring { position: absolute; border-radius: 50%; pointer-events: none; z-index: 0; }
-.panel-glow-ring--top { width:300px;height:300px;top:-80px;right:-60px; background:radial-gradient(circle,rgba(0,180,255,0.10) 0%,transparent 70%); }
-.panel-glow-ring--bot { width:250px;height:250px;bottom:-60px;left:20px; background:radial-gradient(circle,rgba(0,212,212,0.08) 0%,transparent 70%); }
-.visual-image-wrap { position:relative; width:100%; height:100%; }
-.visual-image { width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
-.blockchain-overlay { position:absolute;inset:0; pointer-events:none; }
-.blockchain-svg { width:100%; height:100%; }
-.svg-cube-center { animation: cube-pulse 3s ease-in-out infinite; }
-@keyframes cube-pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
-
-.float-card {
-  position: absolute;
-  display: flex; align-items: center; gap: 0.6rem;
-  padding: 0.6rem 0.9rem;
-  background: rgba(4,10,24,0.9);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0,212,212,0.35);
-  border-radius: 8px;
-  z-index: 10;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  animation: float-bob 4s ease-in-out infinite;
-}
-@keyframes float-bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-.float-card--top { top:16px; left:16px; animation-delay:0s; }
-.float-card--bot { bottom:16px; left:16px; animation-delay:2s; }
-.float-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-.float-dot--green { background:#22c55e; box-shadow:0 0 6px #22c55e; animation:pulse-green 2s ease-in-out infinite; }
-.float-card-text { display:flex; flex-direction:column; gap:1px; }
-.float-card-title { font-size:0.65rem; font-weight:700; letter-spacing:1px; color:#fff; text-transform:uppercase; }
-.float-card-sub { font-size:0.58rem; color:#00d4d4; font-family:'Courier New',monospace; letter-spacing:0.5px; }
-.float-card-status { display:flex; align-items:center; gap:0.4rem; }
-.float-card-shield { width:22px; height:22px; color:#00d4d4; flex-shrink:0; }
-
-/* ═══════════════════════════════════════════════════════
-   HOW IT WORKS
-═══════════════════════════════════════════════════════ */
-.how-it-works {
-  padding: 7rem 4rem;
-  background: #060d1e;
-  border-top: 1px solid rgba(0,212,212,0.1);
-  position: relative;
-  z-index: 1;
-}
-
-.process-flow {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  max-width: 820px;
-  margin: 0 auto;
-}
-
-.process-step {
-  display: flex;
-  gap: 0;
-  align-items: stretch;
-}
-
-.step-number-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 64px;
-  flex-shrink: 0;
-}
-
-.step-num {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  border: 1px solid rgba(0,212,212,0.45);
-  background: rgba(0,212,212,0.06);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #00d4d4;
-  letter-spacing: 1px;
-  flex-shrink: 0;
-}
-
-.step-num--last { border-color: rgba(0,212,212,0.6); box-shadow: 0 0 12px rgba(0,212,212,0.2); }
-
-.step-connector {
-  flex: 1;
-  width: 1px;
-  background: linear-gradient(to bottom, rgba(0,212,212,0.35), rgba(0,212,212,0.1));
-  margin: 6px auto;
-  min-height: 28px;
-}
-
-.step-card {
-  flex: 1;
-  display: flex;
-  align-items: flex-start;
-  gap: 1.25rem;
-  margin-left: 1.25rem;
-  margin-bottom: 2.25rem;
-  padding: 1.5rem 1.75rem;
-  background: rgba(8,16,36,0.6);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0,212,212,0.14);
-  border-radius: 10px;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-.step-card:hover {
-  border-color: rgba(0,212,212,0.4);
-  box-shadow: 0 8px 28px rgba(0,212,212,0.1);
-}
-
-.step-icon-box {
-  width: 44px; height: 44px;
-  flex-shrink: 0;
-  border-radius: 8px;
-  border: 1px solid rgba(0,212,212,0.3);
-  background: rgba(0,212,212,0.06);
-  display: flex; align-items: center; justify-content: center;
-  color: #00d4d4;
-  padding: 9px;
-}
-.step-icon-box--green { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.06); color: #22c55e; }
-
-.step-body { flex: 1; }
-
-.step-tag {
-  font-family: 'Courier New', monospace;
-  font-size: 0.62rem;
-  letter-spacing: 1.5px;
-  color: #00d4d4;
-  opacity: 0.7;
-  display: block;
-  margin-bottom: 0.3rem;
-}
-.step-tag--green { color: #22c55e; }
-
-.step-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 1px;
-  margin: 0 0 0.5rem;
-}
-
-.step-desc {
-  font-size: 0.9rem;
-  color: #5a7a98;
-  line-height: 1.65;
-  margin: 0;
-}
-
-/* ═══════════════════════════════════════════════════════
-   CORE FEATURES
-═══════════════════════════════════════════════════════ */
-.features-section {
-  padding: 7rem 4rem;
-  position: relative;
-  z-index: 1;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.feature-card {
-  background: rgba(8,16,36,0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(0,212,212,0.14);
-  padding: 2rem 1.75rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-.feature-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(0,212,212,0.4), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.feature-card:hover { transform: translateY(-4px); border-color: rgba(0,212,212,0.38); box-shadow: 0 12px 32px rgba(0,212,212,0.1); }
-.feature-card:hover::before { opacity: 1; }
-.feature-card--accent { border-color: rgba(34,197,94,0.25); }
-.feature-card--accent:hover { border-color: rgba(34,197,94,0.55); box-shadow: 0 12px 32px rgba(34,197,94,0.1); }
-.feature-card--accent::before { background: linear-gradient(90deg, transparent, rgba(34,197,94,0.4), transparent); }
-
-.feature-icon-wrap {
-  width: 46px; height: 46px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,212,212,0.3);
-  background: rgba(0,212,212,0.06);
-  display: flex; align-items: center; justify-content: center;
-  color: #00d4d4;
-  padding: 10px;
-  margin-bottom: 1.25rem;
-}
-.feature-icon-wrap--red { border-color: rgba(239,68,68,0.35); background: rgba(239,68,68,0.06); color: #f87171; }
-.feature-icon-wrap--bch { border-color: rgba(34,197,94,0.35); background: rgba(34,197,94,0.06); color: #22c55e; }
-
-.feature-tag {
-  font-family: 'Courier New', monospace;
-  font-size: 0.62rem;
-  letter-spacing: 1.5px;
-  color: #00d4d4;
-  opacity: 0.7;
-  margin-bottom: 0.5rem;
-  display: block;
-}
-.feature-tag--red { color: #f87171; }
-.feature-tag--bch { color: #22c55e; }
-
-.feature-card h3 {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 1px;
-  margin: 0 0 0.75rem;
-}
-.feature-card p {
-  font-size: 0.88rem;
-  color: #5a7a98;
-  line-height: 1.65;
-  margin: 0;
-}
-
-/* ═══════════════════════════════════════════════════════
-   ARCHITECTURE
-═══════════════════════════════════════════════════════ */
-.architecture-section {
-  padding: 7rem 4rem;
-  background: #060d1e;
-  border-top: 1px solid rgba(0,212,212,0.1);
-  position: relative;
-  z-index: 1;
-}
-
-.arch-pipeline {
-  max-width: 820px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-
-.arch-layer {
-  display: flex;
-  gap: 0;
-  align-items: stretch;
-  width: 100%;
-}
-
-.arch-layer-side {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 56px;
-  flex-shrink: 0;
-}
-
-.arch-layer-num {
-  font-family: 'Courier New', monospace;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #00d4d4;
-  letter-spacing: 1px;
-  background: rgba(0,212,212,0.08);
-  border: 1px solid rgba(0,212,212,0.3);
-  border-radius: 4px;
-  padding: 3px 6px;
-  flex-shrink: 0;
-}
-
-.arch-layer-line {
-  flex: 1;
-  width: 1px;
-  background: rgba(0,212,212,0.25);
-  margin: 4px auto;
-}
-
-.arch-layer-card {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  margin-left: 1rem;
-  padding: 1.25rem 1.5rem;
-  border-radius: 10px;
-  border: 1px solid rgba(0,212,212,0.14);
-  background: rgba(8,16,36,0.6);
-  backdrop-filter: blur(10px);
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-.arch-layer-card:hover { border-color: rgba(0,212,212,0.35); box-shadow: 0 6px 24px rgba(0,212,212,0.08); }
-.arch-layer-card--hardware { border-color: rgba(0,212,212,0.2); }
-.arch-layer-card--backend  { border-color: rgba(0,180,255,0.18); }
-.arch-layer-card--data     { border-color: rgba(168,85,247,0.18); }
-.arch-layer-card--anchor   { border-color: rgba(34,197,94,0.28); background: rgba(34,197,94,0.03); }
-.arch-layer-card--verify   {
-  border-color: rgba(0,212,212,0.3);
-  border-style: dashed;
-  background: rgba(0,212,212,0.03);
-  padding: 1rem 1.5rem;
-}
-
-.arch-layer-icon {
-  width: 42px; height: 42px;
-  flex-shrink: 0;
-  border-radius: 8px;
-  border: 1px solid rgba(0,212,212,0.3);
-  background: rgba(0,212,212,0.06);
-  display: flex; align-items: center; justify-content: center;
-  color: #00d4d4;
-  padding: 9px;
-}
-.arch-layer-icon--anchor { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.06); color: #22c55e; }
-
-.arch-layer-body { flex: 1; }
-.arch-layer-body h3 {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 1px;
-  margin: 0.2rem 0 0.4rem;
-}
-.arch-layer-body p {
-  font-size: 0.82rem;
-  color: #5a7a98;
-  margin: 0;
-  line-height: 1.55;
-}
-
-.arch-layer-badge {
-  font-family: 'Courier New', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 1.5px;
-  padding: 2px 7px;
-  border-radius: 3px;
-  display: inline-block;
-  margin-bottom: 0.1rem;
-}
-.arch-layer-badge--hardware { background: rgba(0,212,212,0.1); color: #00d4d4; }
-.arch-layer-badge--backend  { background: rgba(0,180,255,0.1); color: #00b4ff; }
-.arch-layer-badge--data     { background: rgba(168,85,247,0.1); color: #c084fc; }
-.arch-layer-badge--anchor   { background: rgba(34,197,94,0.1); color: #22c55e; }
-.arch-layer-badge--verify   { background: rgba(0,212,212,0.08); color: #00d4d4; }
-
-.arch-layer-status {
-  display: flex; align-items: center; gap: 0.45rem;
-  font-family: 'Courier New', monospace;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: #22c55e;
-  flex-shrink: 0;
-}
-.arch-layer-status--bch { color: #22c55e; }
-
-.arch-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.arch-dot--green { background: #22c55e; box-shadow: 0 0 6px #22c55e; animation: pulse-green 2s ease-in-out infinite; }
-.arch-dot--bch   { background: #22c55e; box-shadow: 0 0 8px #22c55e; animation: pulse-green 2s ease-in-out infinite; }
-
-.arch-connector-vert {
-  width: 20px;
-  height: 40px;
-  margin: 0 auto;
-  flex-shrink: 0;
-}
-.arch-connector-vert svg { width: 100%; height: 100%; }
-
-.arch-side-branch {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  width: 100%;
-  margin-top: 1.5rem;
-  padding-left: 56px;
-}
-.arch-side-branch svg { width: 120px; flex-shrink: 0; }
-.arch-side-branch .arch-layer-card { flex: 1; margin-left: 0; }
-
-/* ═══════════════════════════════════════════════════════
-   PROJECT STATUS
-═══════════════════════════════════════════════════════ */
-.project-status {
-  padding: 7rem 4rem;
-  position: relative;
-  z-index: 1;
-}
-
-.timeline-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.timeline-card {
-  background: rgba(8,16,36,0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(0,212,212,0.14);
-  border-radius: 12px;
-  padding: 1.5rem;
-  position: relative;
-  transition: all 0.3s ease;
-}
-.timeline-card--active {
-  border-color: rgba(0,212,212,0.25);
-}
-.timeline-card--active:hover {
-  border-color: rgba(0,212,212,0.5);
-  box-shadow: 0 8px 28px rgba(0,212,212,0.1);
-  transform: translateY(-3px);
-}
-.timeline-card--pending {
-  border-color: rgba(255,255,255,0.06);
-  opacity: 0.6;
-}
-
-.timeline-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-.timeline-indicator { display: flex; align-items: center; gap: 0.5rem; }
-
-.tl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.tl-dot--active  { background: #00d4d4; box-shadow: 0 0 6px #00d4d4; animation: pulse-cyan 2s ease-in-out infinite; }
-.tl-dot--pending { background: #1e3a5a; }
-
-@keyframes pulse-cyan {
-  0%,100% { box-shadow: 0 0 6px #00d4d4; }
-  50%      { box-shadow: 0 0 14px #00d4d4; }
-}
-
-.tl-badge {
-  font-family: 'Courier New', monospace;
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 2px 7px;
-  border-radius: 3px;
-}
-.tl-badge--active  { background: rgba(0,212,212,0.1); color: #00d4d4; border: 1px solid rgba(0,212,212,0.3); }
-.tl-badge--pending { background: rgba(30,58,90,0.2); color: #3a5a78; border: 1px solid rgba(30,58,90,0.4); }
-
-.tl-num {
-  font-family: 'Courier New', monospace;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: rgba(0,212,212,0.18);
-  letter-spacing: 1px;
-}
-
-.tl-icon {
-  width: 38px; height: 38px;
-  color: #00d4d4;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  border: 1px solid rgba(0,212,212,0.25);
-  background: rgba(0,212,212,0.05);
-  display: flex; align-items: center; justify-content: center;
-  padding: 8px;
-}
-.tl-icon--dim { color: #2a4060; border-color: rgba(42,64,96,0.3); background: rgba(42,64,96,0.1); }
-
-.tl-title { font-size: 0.95rem; font-weight: 700; color: #fff; letter-spacing: 0.5px; margin: 0 0 0.5rem; }
-.tl-desc  { font-size: 0.83rem; color: #5a7a98; line-height: 1.6; margin: 0 0 1.25rem; }
-
-.tl-progress-bar {
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(0,212,212,0.12);
-  overflow: hidden;
-  margin-bottom: 0.4rem;
-}
-.tl-progress-fill {
-  height: 100%;
-  border-radius: 2px;
-  background: linear-gradient(90deg, #00d4d4, #00b4ff);
-  box-shadow: 0 0 6px rgba(0,212,212,0.5);
-  transition: width 1s ease;
-}
-.tl-progress-fill--pending { background: rgba(30,58,90,0.3); box-shadow: none; }
-
-.tl-pct { font-family: 'Courier New', monospace; font-size: 0.65rem; color: #00d4d4; letter-spacing: 1px; }
-.tl-pct--dim { color: #2a4060; }
-
-/* ═══════════════════════════════════════════════════════
-   TECH STACK
-═══════════════════════════════════════════════════════ */
-.tech-stack {
-  padding: 7rem 4rem;
-  background: #060d1e;
-  border-top: 1px solid rgba(0,212,212,0.1);
-  position: relative;
-  z-index: 1;
-}
-
-.tech-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.tech-card {
-  background: rgba(8,16,36,0.65);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0,212,212,0.12);
-  border-radius: 10px;
-  padding: 1.5rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  transition: all 0.3s ease;
-  cursor: default;
-}
-.tech-card:hover {
-  border-color: rgba(0,212,212,0.45);
-  box-shadow: 0 8px 24px rgba(0,212,212,0.1);
-  transform: translateY(-3px);
-}
-.tech-card--accent {
-  border-color: rgba(34,197,94,0.28);
-  background: rgba(34,197,94,0.03);
-}
-.tech-card--accent:hover {
-  border-color: rgba(34,197,94,0.6);
-  box-shadow: 0 8px 24px rgba(34,197,94,0.12);
-}
-
-.tech-card-icon {
-  width: 44px; height: 44px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,212,212,0.28);
-  background: rgba(0,212,212,0.06);
-  display: flex; align-items: center; justify-content: center;
-  color: #00d4d4;
-  padding: 10px;
-}
-.tech-card-icon--bch { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.06); color: #22c55e; }
-
-.tech-card-name {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #e0e8f0;
-  letter-spacing: 0.5px;
-  text-align: center;
-}
-.tech-card-layer {
-  font-family: 'Courier New', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 1.5px;
-  color: #00d4d4;
-  opacity: 0.6;
-  text-transform: uppercase;
-}
-.tech-card-layer--bch { color: #22c55e; opacity: 0.8; }
-
-/* ═══════════════════════════════════════════════════════
-   CTA SECTION
-═══════════════════════════════════════════════════════ */
-.cta-section {
-  padding: 8rem 4rem;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  border-top: 1px solid rgba(0,212,212,0.1);
-}
-.cta-grid-overlay {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(0,212,212,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,212,212,0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-}
-.cta-glow {
-  position: absolute;
-  width: 600px; height: 600px;
-  border-radius: 50%;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(0,180,200,0.07) 0%, transparent 65%);
-  pointer-events: none;
-}
-
-.cta-inner {
-  max-width: 720px;
-  margin: 0 auto;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-
-.cta-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-family: 'Courier New', monospace;
-  font-size: 0.68rem;
-  letter-spacing: 2px;
-  color: #00d4d4;
-  border: 1px solid rgba(0,212,212,0.3);
-  border-radius: 20px;
-  padding: 0.4rem 1rem;
-  margin-bottom: 2rem;
-  background: rgba(0,212,212,0.04);
-}
-
-.cta-title {
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 800;
-  line-height: 1.1;
-  color: #fff;
-  margin: 0 0 1.5rem;
-  letter-spacing: -0.5px;
-}
-
-.cta-desc {
-  font-size: 1.05rem;
-  color: #5a7a98;
-  margin: 0 auto 2.5rem;
-  max-width: 560px;
-  line-height: 1.7;
-}
-
-.cta-actions { justify-content: center; margin-bottom: 3rem; }
-
-.cta-stats {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  border: 1px solid rgba(0,212,212,0.16);
-  border-radius: 10px;
-  background: rgba(8,16,36,0.6);
-  backdrop-filter: blur(10px);
-  overflow: hidden;
-  max-width: 540px;
-  margin: 0 auto;
-}
-.cta-stat { flex: 1; padding: 1rem 1.25rem; text-align: center; }
-.cta-stat-value {
-  display: block;
-  font-family: 'Courier New', monospace;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #00d4d4;
-  letter-spacing: 1px;
-  margin-bottom: 0.3rem;
-}
-.cta-stat-label {
-  display: block;
-  font-size: 0.6rem;
-  letter-spacing: 1.5px;
-  color: #3a5a78;
-  text-transform: uppercase;
-  font-family: 'Courier New', monospace;
-}
-.cta-stat-divider { width: 1px; background: rgba(0,212,212,0.15); align-self: stretch; }
-
-/* ═══════════════════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════════════════ */
-.landing-footer {
-  background: #030812;
-  border-top: 1px solid rgba(0,212,212,0.12);
-  position: relative;
-  z-index: 1;
-}
-
-.footer-top {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 3rem;
-  padding: 4rem 4rem 3rem;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.footer-brand {}
-
-.footer-logo-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin-bottom: 0.4rem;
-}
-.footer-wordmark {
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: 3px;
-  color: #fff;
-}
-.footer-tagline {
-  font-family: 'Courier New', monospace;
-  font-size: 0.62rem;
-  letter-spacing: 2px;
-  color: #00d4d4;
-  margin: 0 0 1rem;
-  opacity: 0.7;
-}
-.footer-about {
-  font-size: 0.85rem;
-  color: #3a5a78;
-  line-height: 1.65;
-  margin: 0;
-  max-width: 280px;
-}
-
-.footer-links-col {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-.footer-col-title {
-  font-family: 'Courier New', monospace;
-  font-size: 0.62rem;
-  letter-spacing: 2px;
-  color: #00d4d4;
-  opacity: 0.6;
-  margin-bottom: 0.4rem;
-  text-transform: uppercase;
-}
-.footer-link {
-  font-size: 0.85rem;
-  color: #3a5a78;
-  text-decoration: none;
-  transition: color 0.2s;
-  cursor: pointer;
-}
-.footer-link:hover { color: #00d4d4; }
-
-.footer-tech-tag {
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  color: #3a5a78;
-  letter-spacing: 0.5px;
-}
-.footer-tech-tag--bch { color: #22c55e; opacity: 0.8; }
-
-.footer-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem 4rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.footer-bottom-left {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.footer-status-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 6px #22c55e;
-  animation: pulse-green 2s ease-in-out infinite;
-}
-.footer-status-text {
-  font-family: 'Courier New', monospace;
-  font-size: 0.62rem;
-  letter-spacing: 1.5px;
-  color: #22c55e;
-  opacity: 0.7;
-}
-.footer-copy {
-  font-size: 0.78rem;
-  color: #2a3f55;
-  text-align: center;
-  margin: 0;
-}
-.footer-bottom-hash {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.footer-hash-label {
-  font-family: 'Courier New', monospace;
-  font-size: 0.58rem;
-  letter-spacing: 1px;
-  color: #2a3f55;
-}
-.footer-hash-value {
-  font-family: 'Courier New', monospace;
-  font-size: 0.65rem;
-  color: #00d4d4;
-  opacity: 0.5;
-  letter-spacing: 0.5px;
-}
-
-/* ═══════════════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════════════ */
-@media (max-width: 1100px) {
-  .hero-section { flex-direction: column; padding: 10rem 2.5rem 4rem; gap: 3rem; }
-  .hero-left, .hero-right { flex: unset; max-width: 100%; width: 100%; }
-  .metrics-panel { max-width: 100%; }
-  .features-grid { grid-template-columns: repeat(2, 1fr); }
-  .timeline-grid  { grid-template-columns: repeat(2, 1fr); }
-  .tech-grid       { grid-template-columns: repeat(3, 1fr); }
-  .footer-top      { grid-template-columns: 1fr 1fr; }
-  .landing-header  { padding: 0.9rem 2rem; }
-  .arch-side-branch { padding-left: 0; flex-direction: column; }
-  .arch-side-branch svg { display: none; }
-}
-
-@media (max-width: 768px) {
-  .landing-nav { display: none; }
-  .features-grid { grid-template-columns: 1fr; }
-  .timeline-grid  { grid-template-columns: 1fr; }
-  .tech-grid       { grid-template-columns: repeat(2, 1fr); }
-  .footer-top      { grid-template-columns: 1fr; gap: 2rem; padding: 2.5rem 1.5rem; }
-  .footer-bottom   { flex-direction: column; gap: 0.75rem; padding: 1.25rem 1.5rem; text-align: center; }
-  .hero-title { font-size: 2.4rem; }
-  .cta-title  { font-size: 2rem; }
-  .metrics-panel { flex-direction: column; }
-  .metric-divider { width: auto; height: 1px; align-self: stretch; }
-  .hero-section, .how-it-works, .features-section,
-  .architecture-section, .project-status,
-  .tech-stack, .cta-section { padding: 4rem 1.5rem; }
-  .cta-stats { flex-direction: column; }
-  .cta-stat-divider { width: auto; height: 1px; align-self: stretch; }
-  .process-step { flex-direction: column; }
-  .step-number-wrap { flex-direction: row; width: auto; }
-  .step-connector { flex: none; height: 1px; width: 24px; margin: auto 0; background: rgba(0,212,212,0.3); }
-  .step-card { margin-left: 0; }
-  .arch-layer { flex-direction: column; }
-  .arch-layer-side { flex-direction: row; width: auto; }
-  .arch-layer-line { flex: none; width: 24px; height: 1px; }
-  .arch-layer-card { margin-left: 0; }
-}
+.arch-node {
+  padding: 20px 16px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); text-align: center; position: relative; z-index: 1;
+  transition: var(--transition); cursor: default;
+}
+.arch-node:hover { border-color: var(--border-2); background: var(--surface-2); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(59,130,246,0.1); }
+.arch-node-icon { font-size: 20px; margin-bottom: 10px; display: flex; justify-content: center; }
+.arch-node-title { font-size: 11px; font-weight: 700; color: var(--text-0); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
+.arch-node-sub { font-family: var(--mono); font-size: 9px; color: var(--text-2); }
+
+.arch-arrows-row { display: flex; justify-content: space-around; padding: 0; margin-bottom: 40px; }
+.arch-arrow-line { width: 80px; height: 1px; background: linear-gradient(90deg, var(--border-2), rgba(6,182,212,0.4)); position: relative; overflow: hidden; }
+.arch-pulse { position: absolute; top: -2px; left: 0; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-2); animation: pulse-flow 2s linear infinite; }
+@keyframes pulse-flow { 0%{left:0;opacity:1} 100%{left:100%;opacity:0} }
+
+.arch-verify { display: flex; align-items: center; justify-content: center; gap: 40px; margin-top: 20px; }
+.arch-node-cyan { border-color: rgba(6,182,212,0.2); background: rgba(6,182,212,0.04); min-width: 160px; }
+.arch-verify-label { text-align: center; margin-top: 16px; font-family: var(--mono); font-size: 10px; color: var(--text-2); letter-spacing: 0.08em; }
+
+/* ─── FEATURES ───────────────────────────────────────────────────────────── */
+.features-section { padding: 120px 0; background: var(--bg-1); }
+.features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.feature-card { padding: 48px 40px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg-0); position: relative; overflow: hidden; transition: var(--transition); }
+.feature-card::after { content:''; position:absolute; inset:0; background:radial-gradient(circle at 70% 120%,rgba(59,130,246,0.05) 0%,transparent 60%); pointer-events:none; }
+.feature-card:hover { border-color: rgba(59,130,246,0.25); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.feature-illustration { width:100%; height:160px; margin-bottom:32px; border-radius:10px; overflow:hidden; background:var(--bg-1); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; }
+.feature-title { font-size: 22px; font-weight: 700; color: var(--text-0); letter-spacing: -0.01em; margin-bottom: 12px; }
+.feature-desc { font-size: 14px; line-height: 1.75; color: var(--text-2); }
+.feature-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.feature-tag { font-family: var(--mono); font-size: 10px; color: var(--accent); padding: 4px 10px; border: 1px solid rgba(59,130,246,0.2); border-radius: 4px; background: rgba(59,130,246,0.06); }
+
+/* ─── VERIFICATION ───────────────────────────────────────────────────────── */
+.verify-section { padding: 120px 0; position: relative; overflow: hidden; }
+.verify-inner { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: start; }
+.verify-panel { padding: 40px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg-1); }
+.verify-panel-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-2); margin-bottom: 28px; display: flex; align-items: center; gap: 10px; }
+.verify-panel-title::before { content:''; display:inline-block; width:8px; height:8px; border:1px solid var(--accent); border-radius:2px; transform:rotate(45deg); }
+.form-group { margin-bottom: 20px; }
+.form-label { display: block; font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-2); margin-bottom: 8px; }
+.form-input { width: 100%; padding: 12px 16px; background: var(--bg-0); border: 1px solid var(--border); border-radius: 8px; color: var(--text-0); font-family: var(--mono); font-size: 12px; outline: none; transition: var(--transition); }
+.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+.btn-verify { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; font-family: var(--sans); }
+.btn-verify:hover:not(:disabled) { background: #2563EB; box-shadow: 0 0 30px rgba(59,130,246,0.3); }
+.btn-verify:disabled { opacity: 0.7; cursor: not-allowed; }
+.spin { animation: _spin 0.8s linear infinite; }
+@keyframes _spin { 100%{ transform: rotate(360deg); } }
+.terminal-output { margin-top: 20px; padding: 16px; background: var(--bg-0); border: 1px solid var(--border); border-radius: 8px; font-family: var(--mono); font-size: 11px; color: var(--text-2); min-height: 80px; }
+.terminal-header { color: var(--accent-2); margin-bottom: 8px; }
+.terminal-line { margin-bottom: 4px; }
+.verify-result { padding: 40px; border-radius: var(--radius); border: 1px solid rgba(34,197,94,0.25); background: rgba(0,20,10,0.6); }
+.verify-status { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.status-badge { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 6px; font-family: var(--mono); font-size: 13px; font-weight: 600; color: #22C55E; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 10px #22C55E; animation: status-pulse 1.5s ease-in-out infinite; }
+@keyframes status-pulse { 0%,100%{box-shadow:0 0 8px #22C55E} 50%{box-shadow:0 0 16px #22C55E} }
+.status-confirm { font-family: var(--mono); font-size: 10px; color: var(--text-2); }
+.verify-field { border-bottom: 1px solid var(--border); padding: 14px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.verify-field:last-of-type { border-bottom: none; }
+.vf-key { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-2); flex-shrink: 0; }
+.vf-val { font-family: var(--mono); font-size: 12px; color: var(--text-0); text-align: right; word-break: break-all; }
+.vf-val.accent { color: var(--accent-2); }
+.vf-val.green { color: #22C55E; }
+.verify-note { margin-top: 20px; padding: 12px; background: rgba(34,197,94,0.05); border: 1px solid rgba(34,197,94,0.15); border-radius: 8px; font-family: var(--mono); font-size: 10px; color: rgba(34,197,94,0.7); line-height: 1.6; }
+
+/* ─── TIMELINE ───────────────────────────────────────────────────────────── */
+.timeline-section { padding: 120px 0; background: var(--bg-1); }
+.timeline-inner { display: grid; grid-template-columns: 360px 1fr; gap: 80px; align-items: start; }
+.timeline-left { }
+.progress-card { margin-top: 40px; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); }
+.progress-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px; color: var(--text-1); }
+.progress-pct { font-family: var(--mono); color: var(--accent); }
+.progress-bar-bg { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 2px; transition: width 1s ease; }
+.timeline-track { position: relative; padding-left: 32px; }
+.timeline-track::before { content:''; position:absolute; left:8px; top:8px; bottom:8px; width:1px; background:linear-gradient(180deg,var(--accent),transparent); }
+.timeline-item { position: relative; margin-bottom: 32px; }
+.timeline-item:last-child { margin-bottom: 0; }
+.tl-dot { position: absolute; left: -32px; top: 3px; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); background: var(--bg-1); display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+.tl-dot.done { border-color: var(--accent); background: rgba(59,130,246,0.15); }
+.tl-dot.done::after { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); }
+.tl-dot.active { border-color: var(--accent-2); background: rgba(6,182,212,0.15); animation: tl-pulse 2s infinite; }
+.tl-dot.active::after { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent-2); }
+@keyframes tl-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(6,182,212,0.3)} 50%{box-shadow:0 0 0 6px rgba(6,182,212,0)} }
+.tl-phase { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-2); margin-bottom: 4px; }
+.tl-title { font-size: 16px; font-weight: 600; color: var(--text-0); }
+.tl-status { display: inline-block; margin-top: 4px; font-family: var(--mono); font-size: 10px; padding: 2px 8px; border-radius: 3px; }
+.tl-status.done { background: rgba(34,197,94,0.1); color: #22C55E; border: 1px solid rgba(34,197,94,0.2); }
+.tl-status.active { background: rgba(6,182,212,0.1); color: var(--accent-2); border: 1px solid rgba(6,182,212,0.2); }
+.tl-status.pending { background: var(--surface); color: var(--text-2); border: 1px solid var(--border); }
+
+/* ─── TECH STACK ─────────────────────────────────────────────────────────── */
+.tech-section { padding: 120px 0; }
+.tech-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-top: 56px; }
+.tech-card { padding: 28px 20px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); text-align: center; transition: var(--transition); cursor: default; }
+.tech-card:hover { border-color: var(--border-2); background: var(--surface-2); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+.tech-icon { width: 40px; height: 40px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: var(--text-2); }
+.tech-name { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 4px; }
+.tech-sub { font-family: var(--mono); font-size: 10px; color: var(--text-3); }
+
+/* ─── CTA ────────────────────────────────────────────────────────────────── */
+.cta-section { padding: 140px 0; position: relative; overflow: hidden; }
+.cta-glow { position: absolute; width: 800px; height: 400px; border-radius: 50%; background: radial-gradient(circle,rgba(59,130,246,0.06) 0%,transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+.cta-headline { font-size: clamp(40px,5vw,64px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; margin: 20px 0 20px; }
+.cta-sub { font-size: 17px; color: var(--text-1); max-width: 500px; margin: 0 auto 40px; line-height: 1.7; }
+.cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+/* ─── FOOTER ─────────────────────────────────────────────────────────────── */
+.landing-footer { border-top: 1px solid var(--border); padding: 48px 40px; }
+.footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+.footer-logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.footer-wordmark { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; }
+.footer-inst { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+.footer-links { display: flex; align-items: center; gap: 32px; list-style: none; padding: 0; }
+.footer-links a { font-size: 13px; color: var(--text-2); transition: var(--transition); text-decoration: none; }
+.footer-links a:hover { color: var(--text-0); }
+.footer-copy { font-family: var(--mono); font-size: 11px; color: var(--text-3); line-height: 1.6; }
 </style>
