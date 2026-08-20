@@ -258,7 +258,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
+import { gsap } from 'gsap'
 
 const darkMode = ref(true)
 const activeTab = ref('txid')
@@ -267,8 +268,8 @@ const payloadHash = ref('')
 const isLoading = ref(false)
 const verificationResult = ref(null) // null | 'success' | 'fail'
 
-const exampleTxid = '9f4e2a7c1b3d...a8f0'
-const exampleHash = 'a3f5c8e2d1b4...92c0'
+const exampleTxid = '9f4e2a7c1b3d5f8e2a1c4b7d9e3f0a2c9f4e2a7c1b3da8f0'
+const exampleHash = 'a3f5c8e2d1b4f7c9e2a3f5c8e2d1b4f7c9e2a3f5c8e292c0'
 
 const steps = [
   { title: 'Enter TXID or payload hash', desc: 'Provide the transaction ID from the BCH blockchain or the SHA-256 payload hash.' },
@@ -285,6 +286,49 @@ const recentVerifications = ref([
     verifiedAt: 'May 24, 2025 · 2:45 PM',
   },
 ])
+
+onMounted(() => {
+  // Page load animations
+  gsap.from('.verify-header', { y: -50, opacity: 0, duration: 0.8, ease: 'power3.out' })
+  
+  gsap.from('.hero-text .hero-pre', { x: -30, opacity: 0, duration: 0.6, delay: 0.2 })
+  gsap.from('.hero-text .hero-title', { x: -40, opacity: 0, duration: 0.8, delay: 0.3, ease: 'power3.out' })
+  gsap.from('.hero-text .hero-subtitle', { x: -30, opacity: 0, duration: 0.6, delay: 0.5 })
+  
+  gsap.from('.trust-item', { 
+    scale: 0.9, 
+    opacity: 0, 
+    stagger: 0.1, 
+    duration: 0.6, 
+    delay: 0.6, 
+    ease: 'back.out(1.5)' 
+  })
+  
+  gsap.from('.hero-visual', { scale: 0.8, opacity: 0, duration: 1, delay: 0.4, ease: 'back.out(1.2)' })
+  
+  // Continuous hologram float animation
+  gsap.to('.hero-image', {
+    y: -15,
+    duration: 3,
+    repeat: -1,
+    yoyo: true,
+    ease: 'power1.inOut'
+  })
+  
+  gsap.from('.verification-panel', { y: 40, opacity: 0, duration: 0.8, delay: 0.7, ease: 'power3.out' })
+  gsap.from('.how-it-works-panel', { y: 40, opacity: 0, duration: 0.8, delay: 0.85, ease: 'power3.out' })
+  
+  gsap.from('.step-item', { 
+    opacity: 0, 
+    x: 20, 
+    stagger: 0.1, 
+    duration: 0.6, 
+    delay: 1, 
+    ease: 'power2.out' 
+  })
+  
+  gsap.from('.recent-section', { opacity: 0, y: 30, duration: 0.8, delay: 1.1 })
+})
 
 function toggleTheme() {
   darkMode.value = !darkMode.value
@@ -327,6 +371,23 @@ async function verifyNow() {
   })
 
   isLoading.value = false
+
+  // Animate the verification result card and table row
+  await nextTick()
+  gsap.from('.result-card', {
+    scale: 0.9,
+    opacity: 0,
+    duration: 0.5,
+    ease: 'back.out(1.5)'
+  })
+
+  gsap.from('.verif-table tbody tr:first-child', {
+    backgroundColor: 'rgba(0, 210, 211, 0.25)',
+    opacity: 0,
+    y: -15,
+    duration: 0.6,
+    clearProps: 'backgroundColor'
+  })
 }
 
 function clearHistory() {

@@ -213,7 +213,7 @@
         <div class="features-grid">
 
           <!-- Hardware Integrity -->
-          <div class="feature-card fade-up">
+          <div class="feature-card">
             <div class="feature-illustration" aria-label="Hardware schematic diagram">
               <svg viewBox="0 0 320 160" fill="none" style="width:100%;height:100%;" aria-hidden="true">
                 <rect x="60" y="20" width="200" height="120" rx="8" fill="none" stroke="rgba(59,130,246,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
@@ -245,7 +245,7 @@
           </div>
 
           <!-- Blockchain Anchoring -->
-          <div class="feature-card fade-up">
+          <div class="feature-card">
             <div class="feature-illustration" aria-label="Blockchain anchoring diagram">
               <svg viewBox="0 0 320 160" fill="none" style="width:100%;height:100%;" aria-hidden="true">
                 <rect x="20" y="60" width="60" height="40" rx="4" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.28)" stroke-width="1"/>
@@ -279,7 +279,7 @@
           </div>
 
           <!-- Independent Verification -->
-          <div class="feature-card fade-up">
+          <div class="feature-card">
             <div class="feature-illustration" aria-label="Independent verification flow">
               <svg viewBox="0 0 320 160" fill="none" style="width:100%;height:100%;" aria-hidden="true">
                 <circle cx="60" cy="80" r="20" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.22)" stroke-width="1"/>
@@ -496,22 +496,163 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 // ── Nav scroll ──────────────────────────────────────────────────────────────
 const isScrolled = ref(false)
 const handleScroll = () => { isScrolled.value = window.scrollY > 20 }
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
-  setupFadeObserver()
+  initAnimations()
 })
 onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
-// ── Fade-up observer ────────────────────────────────────────────────────────
-function setupFadeObserver() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target) } })
-  }, { threshold: 0.15 })
-  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el))
+// ── GSAP Animations ─────────────────────────────────────────────────────────
+function initAnimations() {
+  // Hero section entry animations
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.8 } })
+  tl.from('.hero-left .label', { opacity: 0, y: 20, delay: 0.2 })
+    .from('.hero-headline', { opacity: 0, y: 30, duration: 1 }, '-=0.6')
+    .from('.hero-para', { opacity: 0, y: 20 }, '-=0.6')
+    .from('.hero-btns', { opacity: 0, y: 15 }, '-=0.6')
+    .from('.pcb-svg', { opacity: 0, scale: 0.85, duration: 1.2, ease: 'back.out(1.2)' }, '-=0.8')
+    .from('.hw-comp', { 
+      opacity: 0, 
+      scale: 0.7, 
+      y: 25, 
+      stagger: 0.08, 
+      duration: 0.8, 
+      clearProps: 'transform,opacity' 
+    }, '-=0.8')
+    .from('.hw-badge', { opacity: 0, scale: 0.9, duration: 0.5 }, '-=0.4')
+
+  // Metrics Section
+  gsap.from('.metric-card', {
+    scrollTrigger: {
+      trigger: '.metrics-section',
+      start: 'top 80%',
+      toggleActions: 'play none none none'
+    },
+    opacity: 0,
+    y: 35,
+    stagger: 0.12,
+    duration: 0.8,
+    ease: 'power3.out'
+  })
+
+  // Architecture Section - Nodes
+  gsap.from('.arch-flow .arch-node', {
+    scrollTrigger: {
+      trigger: '.arch-section',
+      start: 'top 75%'
+    },
+    opacity: 0,
+    y: 30,
+    stagger: 0.08,
+    duration: 0.7,
+    ease: 'power3.out'
+  })
+
+  // Architecture Section - Arrows
+  gsap.from('.arch-arrow-line', {
+    scrollTrigger: {
+      trigger: '.arch-section',
+      start: 'top 75%'
+    },
+    scaleX: 0,
+    transformOrigin: 'left center',
+    stagger: 0.08,
+    duration: 1,
+    ease: 'power2.out'
+  })
+
+  // Architecture Section - Verification nodes
+  gsap.from('.arch-verify .arch-node', {
+    scrollTrigger: {
+      trigger: '.arch-verify-label',
+      start: 'top 90%'
+    },
+    opacity: 0,
+    y: 20,
+    stagger: 0.12,
+    duration: 0.7,
+    ease: 'power3.out'
+  })
+
+  // Features Section
+  gsap.from('.features-section .feature-card', {
+    scrollTrigger: {
+      trigger: '.features-section',
+      start: 'top 75%'
+    },
+    opacity: 0,
+    y: 40,
+    stagger: 0.15,
+    duration: 0.9,
+    ease: 'power3.out'
+  })
+
+  // Verification Section
+  gsap.from('.verify-panel', {
+    scrollTrigger: {
+      trigger: '.verify-section',
+      start: 'top 75%'
+    },
+    opacity: 0,
+    x: -40,
+    duration: 0.8,
+    ease: 'power3.out'
+  })
+
+  gsap.from('.verify-result', {
+    scrollTrigger: {
+      trigger: '.verify-section',
+      start: 'top 75%'
+    },
+    opacity: 0,
+    x: 40,
+    duration: 0.8,
+    ease: 'power3.out'
+  })
+
+  // Timeline Section
+  gsap.from('.progress-bar-fill', {
+    scrollTrigger: {
+      trigger: '.timeline-section',
+      start: 'top 75%'
+    },
+    width: '0%',
+    duration: 1.2,
+    ease: 'power3.out'
+  })
+
+  gsap.from('.timeline-item', {
+    scrollTrigger: {
+      trigger: '.timeline-track',
+      start: 'top 80%'
+    },
+    opacity: 0,
+    x: -25,
+    stagger: 0.12,
+    duration: 0.7,
+    ease: 'power3.out'
+  })
+
+  // Tech Section
+  gsap.from('.tech-card', {
+    scrollTrigger: {
+      trigger: '.tech-section',
+      start: 'top 80%'
+    },
+    opacity: 0,
+    y: 25,
+    stagger: 0.06,
+    duration: 0.7,
+    ease: 'power3.out'
+  })
 }
 
 // ── Architecture data ───────────────────────────────────────────────────────
@@ -641,8 +782,7 @@ const techStack = [
 .blueprint-bg::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(59,130,246,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.035) 1px,transparent 1px); background-size:60px 60px; }
 .blueprint-bg::after { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(59,130,246,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.015) 1px,transparent 1px); background-size:12px 12px; }
 
-.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.fade-up.visible { opacity: 1; transform: translateY(0); }
+/* Legacy fade-up replaced by GSAP */
 
 /* ─── NAVIGATION ─────────────────────────────────────────────────────────── */
 .landing-nav {
