@@ -14,4 +14,8 @@ class AssetAdmin(admin.ModelAdmin):
 
 @admin.register(CustodyEvent)
 class CustodyEventAdmin(admin.ModelAdmin):
-    list_display = ('id', 'asset', 'handler', 'timestamp', 'is_anchored')
+    list_display = ('id', 'asset', 'handler', 'location', 'tamper_status', 'is_anchored', 'timestamp')
+    list_filter = ('tamper_status', 'is_anchored', 'location', 'reed_switch_triggered', 'accel_shock_detected')
+    search_fields = ('asset__asset_uid', 'handler__name', 'payload_hash')
+    readonly_fields = ('payload_hash', 'tamper_status')
+
