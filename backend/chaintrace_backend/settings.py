@@ -70,3 +70,19 @@ USE_TZ = True
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+}
+
+# BCH Anchoring Configuration
+BCH_NETWORK = os.environ.get('BCH_NETWORK', 'chipnet')
+BCH_WIF_KEY = os.environ.get('BCH_WIF_KEY', '')
+BCH_PROVIDER_URL = os.environ.get('BCH_PROVIDER_URL', 'https://chipnet.fullstack.cash/v5/')
+
