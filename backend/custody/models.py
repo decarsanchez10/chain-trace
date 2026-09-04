@@ -58,7 +58,11 @@ class CustodyEvent(models.Model):
 
     def compute_hash(self) -> str:
         """Calculates deterministic SHA-256 hash of event telemetry."""
-        ts_str = self.timestamp.isoformat() if hasattr(self.timestamp, 'isoformat') else str(self.timestamp)
+        if hasattr(self.timestamp, 'isoformat'):
+            ts_str = self.timestamp.isoformat().replace('+00:00', 'Z')
+        else:
+            ts_str = str(self.timestamp).replace('+00:00', 'Z')
+
         payload = {
             'asset_uid': self.asset.asset_uid,
             'handler_id': self.handler.id,
@@ -83,9 +87,11 @@ class CustodyEvent(models.Model):
 
     def save(self, *args, **kwargs):
         self.evaluate_tamper_status()
-        if not self.payload_hash:
-            self.payload_hash = self.compute_hash()
         super().save(*args, **kwargs)
+        if not self.payload_hash or self.payload_hash != self.compute_hash():
+            self.payload_hash = self.compute_hash()
+            super().save(update_fields=['payload_hash'])
+
 
     def __str__(self):
         return f"Event #{self.id} - {self.asset.asset_uid} [{self.tamper_status}]"
